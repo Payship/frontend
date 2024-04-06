@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Synthetic Decentralized Exchange Secured by VSDC and Chainlink.">
+
+    <title>Payship.org SWAPS</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <script type="text/javascript" src="static/scripts.js"></script>
+    <script type="text/javascript" src="static/version.js"></script>
+
+    <style rel="stylesheet">
+        h1 {
+            font-size: 4rem;
+        }
+
+        #from-balance,
+        #to-balance,
+        table tr {
+            cursor: pointer;
+        }
+
+        th, td {
+            text-align: right;
+        }
+
+        th:first-child,
+        td:first-child {
+            text-align: left;
+        }
+
+        th small,
+        strong small {
+            font-weight: bold;
+        }
+
+        a.text-muted {
+            text-decoration: underline;
+        }
+
+        .btn-secondary {
+            background-color: #07b;
+        }
+
+        .btn-lg {
+            padding: .5rem 2rem;
+        }
+
+        .custom-select {
+            flex: none !important;
+            width: 7.5rem !important;
+        }
+
+        .font-mono {
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .text-left {
+            float: left;
+        }
+
+        .td-bald {
+            border-top: none !important;
+        }
+
+        .td-thick {
+            border-bottom: 2px solid !important;
+        }
+
+        .td-ghost {
+            opacity: 0.25;
+        }
+
+        .td-ghostly {
+            opacity: 0.5;
+        }
+
+        .navbar-nav {
+            color: #c0c;
+        }
+
+        #from-balance *,
+        #to-balance * {
+            font-size: 0.66rem !important;
+            font-weight: normal !important;
+        }
+
+        #folio-modal button.close {
+            margin-top: -0.66rem;
+        }
+        
+        #version {
+            text-transform: lowercase !important;
+        }
+    </style>
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" rel="icon" type="image/x-icon">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="header" class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><span class="symbol">(-§-)</span> PAYSHIP<sup>SWAPS <small id="version">v-.-.-</small></sup></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse text-right pr-3" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><span>«BACK</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <a id="swap"><br /><br /></a>
+
+    <section>
+        <div class="container">
+            <div id="container-vsync" class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="pt-5 pb-5">
+                        <h6 class="text-center">SWAP SYNTHETIC ASSETS</h6>
+                        <hr />
+                        <form class="shadow-lg p-3 mb-5 bg-white rounded">
+                            <input id="swapApproval" type="hidden" value="1000000">
+                            <small class="form-text text-white text-left font-mono badge bg-danger"><span id="eth-address">NO WALLET CONNECTED</span></small>
+                            <small class="form-text text-muted text-right font-mono"><span id="from-balance" alt="from-swap">&mdash;</span></small>
+                            <div id="from-swap" class="input-group mt-1 mb-1">
+                                <input type="decimal" class="form-control form-control-lg" placeholder="0.0" aria-label="Amount" disabled>
+                                <button alt="from-swap" type="button" value="VSDC" class="form-control custom-select custom-select-lg" aria-label="Swap From Token" data-toggle="modal" data-target="#folio-modal" disabled>VSDC</button>
+                            </div>
+                            <div class="text-center">
+                                <button id="btn-rotate" type="button" class="btn btn-lg btn-light pt-0 pb-0 rounded-pill" disabled><b>&#8675;</b></button>
+                            </div>
+                            <div id="to-swap" class="input-group mt-1">
+                                <input type="decimal" class="form-control form-control-lg" placeholder="0.0" aria-label="Amount" disabled>
+                                <button alt="to-swap" type="button" value="§VSDC" class="form-control custom-select custom-select-lg" aria-label="Swap To Token" data-toggle="modal" data-target="#folio-modal" disabled>§VSDC</button>
+                            </div>
+                            <small class="form-text text-muted text-right font-mono"><span id="to-balance" alt="to-swap">&mdash;</span></small>
+                            <hr />
+                            <small class="form-text text-muted float-right mt-0">
+                                <span id="to-size">1</span> <span id="to-ticker">§VSDC</span> = <span id="from-size"><strong>1.<small>00</small></strong></span> <span id="from-ticker">VSDC</span>
+                            </small>
+                            <small class="form-text text-muted">
+                                Slippage: 0%
+                                <br />
+                                Fee: <span id="fee">0</span>%
+                            </small>
+                            <div class="text-center">
+                                <button id="btn-connect" type="button" class="btn btn-lg btn-secondary rounded-pill mt-3 mb-3">Connect Wallet</button>
+                            </div>
+
+                            <div class="text-danger text-center"><span id="alert-error"></span></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div id="folio-tos" class="p-5">
+                        <p><small>
+                            Regulators, particularly in the US and EU, are always trying to expand their oppressive measures of control under the disguise of "protecting" the investors. We believe that investors are smart, diligent &amp; independent adults. Therefore, please acknowledge that by connecting your self-custodian wallet to this service you are accepting the following Terms of Service:<br />
+                            <strong>You shall use this service only with accordance of all the laws and regulations you are currently under. We shall bear no responsibility over unlawful or unregulated use of this service. This is an interface to experimental smart contracts. Your funds are at risk.</strong> DYOR NFA YOLO.
+                            <hr />
+                            This web page is an instance of the open source interface to the Payship platform smart contracts. You too can publish this interface using nothing more than a static hosting web server.<br />
+                            Go to <a href="https://github.com/Payship/frontend">Payship Frontend GitHub repository</a> to learn more.
+                        </small></p>
+                    </div>
+                    <div id="folio-box" class="pt-5 pb-5" style="display: none">
+                        <h6 class="text-center">YOUR PORTFOLIO</h6>
+                        <hr />
+
+                        <div class="table-responsive">
+                            <table id="folio" class="table table-hover table-sm table-folio">
+                                <thead>
+                                    <tr>
+                                        <th class="td-bald"><small>Assets</small></th>
+                                        <th class="td-bald"><small>Price</small></th>
+                                        <th class="td-bald"><small>Value</small></th>
+                                        <th class="td-bald"><small>Balance</small></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="folio-eth">
+                                    <tr value="ETH">
+                                        <td>ETH</td>
+                                        <td><small>$</small><span class="price-eth">&mdash;</span></td>
+                                        <td><small>$</small><span id="value-eth">&mdash;</span></td>
+                                        <td><span id="balance-eth" class="balance">&mdash;</span></td>
+                                    </tr>
+                                </tbody>
+
+                                <tbody id="folio-vsdc">
+                                    <tr value="VSDC">
+                                        <td>VSDC</td>
+                                        <td><small>$</small><span class="price-vsdc" alt="1000000000000000000"><strong>1.<small>00</small></strong></span></td>
+                                        <td><small>$</small><span id="value-vsdc">&mdash;</span></td>
+                                        <td><span id="balance-vsdc" class="balance">&mdash;</span></td>
+                                    </tr>
+                                </tbody>
+                                <thead id="tips">
+                                    <tr>
+                                        <td colspan="4" class="text-center">
+                                            <small class="text-muted text-info">Swap ETH to VSDC to start trading. Wrap VSDC into §VSDC to swap faster with lower gas.</small>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                
+                                
+                                <thead>
+                                        <tr>
+                                            <th colspan="4" class="td-bald"><br /><small id="synts-title">Synthetics</small></th>
+                                        </tr>
+                                </thead>
+                                <tbody id="folio-synts" class="table-folio-synts"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <header class="masthead text-center text-white">
+        <div class="masthead-content">
+            <div class="container">
+                <h1 class="masthead-heading mb-0"></h1>
+                <br />
+                <h6 class="mb-0 text-muted">Synthetic Decentralized Exchange Secured by VSDC &amp; Chainlink</h6>
+                <br />
+                <h1 class="mt-0 mb-2"><span class="symbol">(-§-)</span> PAYSHIP<sup>SWAPS</sup></h1>
+                <br />
+                <h5 class="mt-2">Play with DeFi&mdash;Forget slippage, bots &amp; mev. Get low fees &amp; low gas.</h5>
+                <br />
+            </div>
+        </div>
+    </header>
+
+    <div id="folio-modal" class="modal" tabindex="-1" aria-labelledby="folio-modal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <input id="modal-search" type="text" class="form-control" placeholder="Search ticker..." />
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Portfolio</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-black">
+        <div class="container">
+            <p class="m-0 text-center text-uppercase small"><a href="index.html">HOME</a></p>
+            <hr />
+            <p class="m-0 text-center text-white small"><span class="symbol">(-§-)</span> PAYSHIP.org &copy; 2021&mdash;2024</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <script type="text/javascript">
+"use strict";
+
+const CID = 8453; // 1 - Mainnet, 5 - Goerli, 8453 - Base Mainnet
+const sVSDC = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("VSDC"));
+
+let accounts;
+let provider;
+let network;
+let signer;
+
+let allSynts;
+let allTickers = [];
+
+let lastAddress;
+let lastEthPrice;
+let lastEthBalance;
+let lastVsdcBalance;
+
+let preloadPriceInterval;
+let livePriceInterval;
+
+let lastSwapButton = 'to-swap';
+let lastSwapFrom = 'VSDC';
+let lastSwapTo = '§VSDC';
+let modalOpen = false;
+
+let totalSynts = 0;
+let preloadSid = 1;
+
+let lastSidFrom = 0;
+let lastSidTo = 0;
+
+let vsdcContract;
+let faucethContract;
+let swapsyntContract;
+
+
+async function onConnect() {
+    if (confirm("Terms of Service: You shall use this service only with accordance of all the laws and regulations you are currently under. We shall bear no responsibility over unlawful or unregulated use of this service. This is an interface to experimental smart contracts. Your funds are at risk. DYOR NFA YOLO & F#CK SEC.")) {
+
+        if (window.ethereum) {
+            provider = new ethers.providers.Web3Provider(window.ethereum)
+            accounts = await provider.send("eth_requestAccounts", []);
+            afterConnect();
+        }
+        else if (window.web3) {
+            provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+            accounts = provider.provider.accounts;
+            afterConnect();
+        }
+
+    }
+
+    return false;
+}
+
+async function updateEthBalance() {
+    try {
+        lastEthBalance = await signer.getBalance();
+    }
+    catch (error) {
+        lastEthBalance = 0;
+        console.log("lastEthBalance\n\n" + error);
+    }
+}
+
+async function updateVsdcBalance() {
+    try {
+        lastVsdcBalance = await vsdcContract.balanceOf(lastAddress);
+    }
+    catch (error) {
+        lastVsdcBalance = 0;
+        console.log("lastVsdcBalance\n\n" + error);
+    }
+}
+
+async function updateTotalSynts() {
+    if (totalSynts == 0) {
+        try {
+            totalSynts = await swapsyntContract._sid();
+        }
+        catch (error) {
+            console.log("totalSynts\n\n" + error);
+        }
+    }
+}
+
+async function updateAllSynts() {
+    try {
+        allSynts = await swapsyntContract.getFolio();
+    }
+    catch (error) {
+        allSynts = undefined;
+        console.log(SwapsyntAddress + " allSynts\n\n" + error);
+    }
+}
+
+async function updatePrice(sid) {
+    let preload = false;
+    if (sid == undefined) {
+        sid = preloadSid;
+        preload = true;
+    }
+
+    const synt = allSynts[sid];
+    const bytesArray = ethers.utils.arrayify(synt.ticker);
+    const ticker = String.fromCharCode(...bytesArray);
+    const balance = synt.balance;
+    const oracleAddress = synt.oracle;
+
+    let price = bigNum('1');
+    let priceDisplay = prixNum(forComm(forNum(price)),2);
+    let valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
+
+    if (oracleAddress && ticker != 'VSDC') {
+        try {   
+            price = await swapsyntContract.getPrice(oracleAddress);
+        }
+        catch (error) {
+            console.log(ticker + " price\n\n" + error);
+        }
+
+        if (ticker == 'ETH') {
+            $('.price-eth').attr('alt',price);
+        }
+
+        priceDisplay = prixNum(forComm(forNum(price)),2);
+        valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
+    }
+
+    $('.price-' + ticker.toLowerCase()).attr('alt',price).html(priceDisplay);
+    $('.value-' + ticker.toLowerCase()).html(valueDisplay);
+
+    if (preload) {
+        preloadSid += 1;
+        
+        if (preloadSid >= totalSynts) {
+            clearInterval(preloadPriceInterval);
+            preloadSid = 1;
+        }
+    }
+    else {
+        updateSizePrice(getPairPrice());
+    }
+}
+
+async function updateAssets() {
+    await updateEthBalance();
+    await updateVsdcBalance();
+
+    $('#balance-eth').html(prixNum(forComm(forNum(lastEthBalance)),6)).attr('value',forNum(lastEthBalance));
+    $('#balance-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),6)).attr('value',forNum(lastVsdcBalance));
+    $('#value-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),0));
+
+    $('#synts-title').text('Synthetics loading...');
+
+    if ($('#from-swap button').val() == 'VSDC') $('#from-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
+    if ($('#to-swap button').val() == 'VSDC') $('#to-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
+
+    if ($('#from-swap button').val() == 'ETH') $('#from-balance').html(prixNum(forNum(lastEthBalance))).attr('value',forNum(lastEthBalance));
+    if ($('#to-swap button').val() == 'ETH') $('#to-balance').html(prixNum(forNum(lastEthBalance))).attr('value',forNum(lastEthBalance));
+
+    await updateTotalSynts();
+    await updateAllSynts()
+
+    if (allSynts) {
+        let index = 0;
+        let tableEmpty = $('.table-folio-synts tr').length <= 0 ? true : false;
+        
+        const tbody = $('.table-folio-synts');
+
+        for (const synt of allSynts) {
+            let price = 0;
+
+            const bytesArray = ethers.utils.arrayify(synt.ticker);
+            const ticker = String.fromCharCode(...bytesArray);
+                  allTickers['§' + ticker] = index;
+                  allTickers[ticker] = index;
+                  index += 1;
+
+            const balance = synt.balance;
+            const oracleAddress = synt.oracle;
+
+            if (oracleAddress && ticker == 'ETH') {
+                try {   
+                    price = await swapsyntContract.getPrice(oracleAddress);
+                }
+                catch (error) {
+                    console.log(ticker + " price\n\n" + error);
+                }
+
+                $('#value-eth').html(prixNum(forComm(forNum(bigMul(lastEthBalance,price,true))),0));
+                $('.price-eth').attr('alt',price);
+            }
+            else if (ticker == 'VSDC') {
+                price = bigNum('1');
+            }
+
+            let tickerClass = ticker.toLowerCase();
+            let balanceDisplay = balance ? prixNum(forComm(forNum(balance)),6) : "&mdash;";
+            let priceDisplay = price ? prixNum(forComm(forNum(price)),2) : "&mdash;";
+            let valueDisplay = price ? prixNum(forComm(forNum(bigMul(balance,price,true))),0) : "&mdash;";
+
+            if (tableEmpty) {
+                const row = $('<tr>').attr('value', '§' + ticker);
+                const symbolCell = $('<td>').text('§' + ticker);
+                const balanceCell = $('<td>').html('<span class="balance balance-' + tickerClass + '" value="' + forNum(balance) + '">' + balanceDisplay + '</span>');
+
+                const valueCell = $('<td>').html('<small>$</small><span class="value-' + tickerClass + '">' + valueDisplay + '</span>');
+                const priceCell = $('<td>').html('<small>$</small><span class="price-' + tickerClass + '" alt="' + price + '">' + priceDisplay + '</span>');
+                                  
+                row.append(symbolCell, priceCell, valueCell, balanceCell);
+                tbody.append(row);
+            }   
+
+            $('.balance-' + tickerClass).attr('alt',forNum(balance)).html(balanceDisplay);
+            $('.price-' + tickerClass).attr('alt',price).html(priceDisplay);
+            $('.value-' + tickerClass).html(valueDisplay);
+
+            if ($('#from-swap button').val() == '§' + ticker) $('#from-balance').html(prixNum(forComm(forNum(balance)))).attr('value',forNum(balance));
+            if ($('#to-swap button').val() == '§' + ticker) $('#to-balance').html(prixNum(forComm(forNum(balance)))).attr('value',forNum(balance));
+        }
+
+        if (preloadPriceInterval) {
+            clearInterval(preloadPriceInterval);
+            preloadSid = 1;
+        }
+        preloadPriceInterval = setInterval(function(){ updatePrice(); }, 250);
+    }
+
+    $('#folio tbody tr').click(onTickerSelect);
+    $('#synts-title').text('Synthetics');
+    $('#btn-connect').text('Swap');
+
+    updateSizePrice(getPairPrice());
+    enableUI();
+}
+
+async function afterConnect() {
+    $('#btn-connect').text('Loading . . .');
+
+    $('#folio-tos').hide();
+    $('#container-vsync').addClass('align-items-top').removeClass('align-items-center');
+    $('#folio-box').show();
+
+    network = await provider.getNetwork();
+    lastAddress = accounts[0];
+
+    try {
+        if (network.chainId != CID) {
+            await provider.send("wallet_switchEthereumChain",[{ chainId: ethers.utils.hexValue(CID) }]);
+            window.location.reload(true);
+        }
+    }
+    catch (error) {
+        window.location.reload(true);
+    }
+
+    signer = provider.getSigner();
+
+    vsdcContract = new ethers.Contract(VSDCAddress, VSDCABI, signer);
+    faucethContract = new ethers.Contract(FaucethAddress, FaucethABI, signer);
+    swapsyntContract = new ethers.Contract(SwapsyntAddress, SwapsyntABI, signer);
+
+    updateAssets();
+
+    $('#eth-address').text(forAdd(lastAddress)).parent().removeClass('bg-danger').addClass('bg-success');
+
+    document.querySelector("#btn-connect").removeEventListener("click", onConnect);
+    document.querySelector("#btn-connect").addEventListener("click", onSwap);
+    document.querySelector("#modal-search").addEventListener('keyup', onModalSearch);
+
+    $('#btn-rotate').click(onTickerRotate);
+    $('#from-swap input, #to-swap input').on('input',onValueChange);
+    $('#from-swap button, #to-swap button').click(onTickerClick);
+    $('#from-balance, #to-balance').click(onBalanceClick);
+}
+
+async function onCheckAllowance() {
+    if($('#from-swap button').val() == 'VSDC') {
+        let offer = toBigNum('#from-swap input').toString();
+        let address = $('#to-swap button').val() == 'ETH' ? FaucethAddress : SwapsyntAddress;
+        let allowance = await vsdcContract.allowance(lastAddress,address);
+
+        if (bigLt(allowance,offer)) {
+            $('#btn-connect').text('Approve');
+            document.querySelector("#btn-connect").removeEventListener("click", onSwap);
+            document.querySelector("#btn-connect").addEventListener("click", onApprove);
+        }
+        else {
+            $('#btn-connect').text('Swap');
+            document.querySelector("#btn-connect").removeEventListener("click", onApprove);
+            document.querySelector("#btn-connect").addEventListener("click", onSwap);
+        }
+    }
+}
+
+function onBalanceClick() {
+    let source = '#' + $(this).attr('id');
+    let target = source == '#from-balance' ? '#from-swap' : '#to-swap';
+
+    $(target + ' input').val($(source).attr('value'));
+    onValueChangeProcess($(target));
+}
+
+async function onTickerClick(event) {
+    const modalBody = document.querySelector('.modal-body');
+    const folioTable = document.querySelector('#folio').cloneNode(true);
+
+    modalBody.innerHTML = '';
+    modalBody.appendChild(folioTable);
+    lastSwapButton = $(event.target).attr('alt');
+    modalOpen = true;
+
+    $('.modal-body .table-folio tbody tr').click(onTickerSelect);
+}
+
+async function onTickerSelect(event,source,pass = 0) {
+    const origin = source ? source : this;
+    const ticker = $(origin).attr('value');
+
+    if(ticker == 'ETH' && modalOpen == false) {
+        lastSwapButton = 'from-swap';
+    }
+
+    let lastSpanBalance = lastSwapButton == 'from-swap' ? 'from-balance' : 'to-balance';
+    let balance = $(origin).find('.balance').attr('value');
+    
+    $('#' + lastSpanBalance).html(prixNum(balance)).attr('value',balance);
+    $('#' + lastSwapButton + ' button').text(ticker).val(ticker);
+    $('#folio-modal').modal('hide');
+    modalOpen = false;
+
+    lastSwapButton = 'to-swap';
+    onTickerChange(event,origin,pass);
+}
+
+function onModalSearch(event) {
+    let input = event.target.value.toLowerCase();
+    const tableRows = document.querySelectorAll('.modal-body .table-folio tbody tr');
+
+    for (let row of tableRows) {
+        let tickerCell = row.cells[0];
+        let tickerText = toClass(tickerCell.innerText);
+
+        if (tickerText.startsWith(input)) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    }
+}
+
+async function onTickerRotate() {
+    let tempValue = $('#from-swap input').val();
+    let tempTicker = $('#from-swap button').val();
+    let tempText = $('#from-swap button').text();
+    let tempBalance = $('#from-balance').html();
+    let tempBalanceValue = $('#from-balance').attr('value');
+
+    $('#from-swap input').val( $('#to-swap input').val() );
+    $('#from-swap button').val( $('#to-swap button').val() );
+    $('#from-swap button').text( $('#to-swap button').text() );
+    $('#from-balance').html( $('#to-balance').html() ).attr('value', $('#to-balance').attr('value') );
+
+    $('#to-swap input').val(tempValue);
+    $('#to-swap button').val(tempTicker).text(tempText);
+    $('#to-balance').html(tempBalance).attr('value',tempBalanceValue);
+
+    lastSwapButton = 'to-swap';
+    lastSwapFrom = $('#from-swap button').val();
+    lastSwapTo = $('#to-swap button').val();
+
+    onCheckAllowance();
+    onTickerChange();
+
+    return false;
+}
+
+async function onValueChange(event) {
+    let thisTarget = $(event.currentTarget);
+    onValueChangeProcess(thisTarget.parent());
+}
+
+function onValueChangeProcess(thisParent) {
+    let pp = getPairPrice();
+
+    if (thisParent.attr('id') == 'from-swap') {
+        let fromValue = $('#from-swap input').val();
+
+        if (parseFloat(fromValue) > 0) {
+            $('#to-swap input').val( forNum(bigDiv(bigMul(toBigNum('#from-swap input').toString(),pp.from),pp.to)) );
+            if ($('#from-swap button').val() == 'VSDC') {
+                onCheckAllowance();
+            }
+        }
+        else {
+            $('#to-swap input').val('');
+        }
+    }
+    if (thisParent.attr('id') == 'to-swap') {
+        let toValue = $('#to-swap input').val();
+
+        if (parseFloat(toValue) > 0) {
+            $('#from-swap input').val( forNum(bigDiv(bigMul(toBigNum('#to-swap input').toString(),pp.to),pp.from)) );
+
+            if ($('#from-swap button').val() == 'VSDC') {
+                onCheckAllowance();
+            }
+        }
+        else {
+            $('#from-swap input').val('');
+        }
+    }
+
+    return false;
+}
+
+async function updateSizePrice(pp) {
+    $('#from-size').html(prixNum(forComm(forNum(bigDiv(bigMul("1000000000000000000",pp.to),pp.from))),2));
+}
+
+async function onTickerChange(event,source,pass) {
+    if (pass == 0) {
+        pass += 1;
+
+        if ($(source).attr('value') == 'ETH') {
+            if ($('#from-swap button').text() == 'ETH') {
+                onTickerSelect(event,$('#folio-vsdc tr'),pass);
+                return false;
+            }
+
+            if ($('#to-swap button').text() == 'ETH') {
+                lastSwapButton = 'from-swap';
+                onTickerSelect(event,$('#folio-vsdc tr'),pass);
+                return false;
+            }
+        }
+        else if ($(source).attr('value') != 'VSDC') {
+            if ($('#from-swap button').text() == 'ETH') {
+                lastSwapButton = 'from-swap';
+                onTickerSelect(event,$('#folio-vsdc tr'),pass);
+                return false;
+            }
+
+            if ($('#to-swap button').text() == 'ETH') {
+                lastSwapButton = 'to-swap';
+                onTickerSelect(event,$('#folio-vsdc tr'),pass);
+                return false;
+            }
+        }
+    }
+
+    $('#from-ticker').text( $('#from-swap button').text() );
+    $('#to-ticker').text( $('#to-swap button').text() );
+
+    let pp = getPairPrice();
+             updateSizePrice(pp);
+
+    if (lastSwapButton == 'from-swap') {
+        onValueChangeProcess($('#to-swap'));
+    }
+    else {
+        onValueChangeProcess($('#from-swap'));
+    }
+
+    if ((pp.fromTicker == 'VSDC' && pp.toTicker == '§VSDC') ||
+        (pp.fromTicker == '§VSDC' && pp.toTicker == 'VSDC') ) {
+        $('#fee').text('0');
+    }
+    else if (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH' ) {
+        $('#fee').text('0.5');
+    }
+    else {
+        $('#fee').text('0.1');
+    }
+
+    lastSidFrom = allTickers[pp.fromTicker];
+    lastSidTo = allTickers[pp.toTicker];
+
+    updatePrice(lastSidFrom);
+    updatePrice(lastSidTo);
+
+    if (livePriceInterval) clearInterval(livePriceInterval);
+    livePriceInterval = setInterval(function () { updatePrice(lastSidFrom); updatePrice(lastSidTo); }, 15000);
+
+    return false;
+}
+
+function getPairPrice() {
+    let fromTicker = $('#from-ticker').text();
+    let toTicker = $('#to-ticker').text();
+
+    let fromTickerClass = toClass(fromTicker);
+    let toTickerClass = toClass(toTicker);
+
+    let fromSize = toBigNum('#from-swap input');
+    let toSize = toBigNum('#to-swap input');
+
+    let fromPrice = $('.price-' + fromTickerClass).attr('alt');
+    let toPrice = $('.price-' + toTickerClass).attr('alt');
+    
+    return { 
+            fromTicker: fromTicker,
+            fromSize: fromSize,
+            from: fromPrice, 
+
+            toTicker: toTicker,
+            toSize: toSize,
+            to: toPrice
+        };
+}
+
+function beforeTransaction() {
+    $('#btn-connect').text('Waiting . . .');
+    disableUI();
+
+    return false;
+}
+
+async function onSwap() {
+    let pp = getPairPrice();
+
+    if (pp.fromSize == undefined || pp.toSize == undefined || 
+        pp.fromSize == null || pp.toSize == null ||
+        pp.fromSize == 0 || pp.toSize == 0 ||
+        pp.fromTicker == pp.toTicker) return false;
+
+    let tx = beforeTransaction();
+
+    try {
+        if (pp.fromTicker == 'ETH' && pp.toTicker == 'VSDC') {
+            let fromSize = toBigNum('#from-swap input', 'ether');
+            tx = await faucethContract.mint({ value: fromSize });
+        }
+        else if (pp.fromTicker == 'VSDC' && pp.toTicker == 'ETH') {
+            tx = await faucethContract.burn(pp.fromSize);
+        }
+        else if (pp.fromTicker == 'VSDC' && pp.toTicker == '§VSDC') {
+            tx = await swapsyntContract.deposit(pp.fromSize);
+        }
+        else if (pp.fromTicker == '§VSDC' && pp.toTicker == 'VSDC') {
+            tx = await swapsyntContract.withdraw(pp.fromSize);
+        }
+        else if (pp.fromTicker == 'VSDC' && pp.toTicker != '§VSDC') {
+            tx = await swapsyntContract.buyAsset(toBytes(toClass(pp.toTicker,false)),pp.fromSize,false);
+        }
+        else if (pp.fromTicker != '§VSDC' && pp.toTicker == 'VSDC') {
+            tx = await swapsyntContract.sellAsset(toBytes(toClass(pp.fromTicker,false)),pp.fromSize,false);
+        }
+        else if (pp.fromTicker == '§VSDC' && pp.toTicker != 'VSDC') {
+            tx = await swapsyntContract.buyAsset(toBytes(toClass(pp.toTicker,false)),pp.fromSize,true);
+        }
+        else if (pp.fromTicker != 'VSDC' && pp.toTicker == '§VSDC') {
+            tx = await swapsyntContract.sellAsset(toBytes(toClass(pp.fromTicker,false)),pp.fromSize,true);
+        }
+        else {
+            tx = await swapsyntContract.swapAsset(toBytes(toClass(pp.fromTicker,false)),toBytes(toClass(pp.toTicker,false)),pp.fromSize);
+        }
+    } catch (error) {
+        console.log(error);
+
+        let reason = 'Error! ' + error.reason + '. <a href="/" class="text-muted">Refresh page</a>';
+        $('#alert-error').html(reason);
+    }
+
+    onTransaction(tx);
+
+    return false;
+}
+
+async function onApprove() {
+    let pp = getPairPrice();
+    let tx = beforeTransaction();
+
+    let contractAddress = (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH') ? FaucethAddress : SwapsyntAddress;
+
+    try {
+        tx = await vsdcContract.approve(contractAddress, toBigNum('#swapApproval'));
+    } catch (error) {
+        console.log(error);
+    }
+
+    onTransaction(tx);
+
+    return false;
+}
+
+async function onTransaction(tx) {
+    if (tx) {
+        $('#btn-connect').text('Confirming . . .');
+
+        await tx.wait().then(function(result) {
+            enableUI();
+
+            if (result.status) {
+                updateAssets();
+                $('#btn-connect').text('Confirmed !');
+            }
+            else {
+                $('#btn-connect').text('Failure !');
+            }
+
+            setTimeout(function() {
+                document.querySelector("#btn-connect").removeEventListener("click", onApprove);
+                document.querySelector("#btn-connect").addEventListener("click", onSwap);
+
+                $('#btn-connect').text('Swap');
+            }, 3000)
+        });
+    }
+    else {
+        enableUI();
+    }
+}
+
+window.addEventListener('load', async () => {
+    $('#version').text(version);
+
+    $.getScript('static/structs-' + CID + '.js?ver=' + version, function() {
+        document.querySelector("#btn-connect").addEventListener("click", onConnect);
+        onConnect();
+    });
+});
+
+function toClass(val,lc = true) {
+    val = val.replace('§','')
+
+    if (lc) return val.toLowerCase();
+    return val;
+}
+
+function toBytes(val) {
+    return ethers.utils.id(val);
+}
+
+function toBigNum(selector,dec = 18) {
+    return ethers.utils.parseUnits(($(selector).val() ? $(selector).val() : '0'),dec);
+}
+
+function bigNum(num,dec = 18) {
+    return ethers.utils.parseUnits(num,dec);
+}
+
+function bigAdd(above,below) {
+    return ethers.BigNumber.from(above).add(below);
+}
+
+function bigMul(above,below,divide = false) {
+    if (divide) return ethers.BigNumber.from(above).mul(below).div("1000000000000000000");
+    return ethers.BigNumber.from(above).mul(below);
+}
+
+function bigDiv(above,below) {
+    if (below == 0) below = 1;
+    return ethers.BigNumber.from(above).div(below);
+}
+
+function bigLt(above,below,cast = false) {
+    if (cast) {
+        above = to18(above);
+        below = to18(below);
+    }
+
+    return ethers.BigNumber.from(above).lt(below);
+}
+
+function forNum(val, dec = 18) {
+    return ethers.utils.formatUnits(val.toString(), dec);
+}
+
+function forComm(val) {
+    return ethers.utils.commify(val);
+}
+
+function prixNum(price, acc = 16) {
+    let parts = price.toString().split('.');
+
+    if (parts.length < 2 || parts[1].length <= 2) {
+        if (parts[1].length == 1) parts[1] += '0';
+
+        let partsSupplement = '';
+        for (var i = acc; i > 0; i--) partsSupplement += '0';
+
+        return '<strong>' + parts[0] + '.' + '<small>' + parts[1] + '</small></strong><small>' + partsSupplement + '</small>';
+    }
+
+    let fractionalParts = [parts[1].substr(0, 2), parts[1].substr(2)];
+    let fractionalPartsSupplement = acc - fractionalParts[1].length;
+
+    for (var i = fractionalPartsSupplement; i > 0; i--) fractionalParts[1] += '0';
+
+    fractionalParts[1] = fractionalParts[1].substr(0, acc);
+    fractionalParts[1] = '<small>' + fractionalParts[1] + '</small>';
+
+    return '<strong>' + parts[0] + '.' + '<small>' + fractionalParts[0] + '</small></strong>' + fractionalParts[1];
+}
+
+function txtNum(val) {
+    return forComm(forNum(bigNum(val)));
+}
+
+function forAdd(val) {
+    return val.replace(val.substring(6,38),'..')
+}
+
+function enableUI() {
+    $('#from-balance, #from-swap input, #from-swap button, #to-balance, #to-swap input, #to-swap button, #btn-rotate, #btn-connect').removeAttr('disabled');
+}
+
+function disableUI() {
+    $('#from-balance, #from-swap input, #from-swap button, #to-balance, #to-swap input, #to-swap button, #btn-rotate, #btn-connect').attr('disabled', true);
+}
+
+    </script>
+</body>
+</html>

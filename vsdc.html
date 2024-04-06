@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Virtual Stable Denomination Contract in-dApp coin securing the Payship platform.">
+
+    <title>Payship.org VSDC</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <script type="text/javascript" src="static/scripts.js"></script>
+    <script type="text/javascript" src="static/version.js"></script>
+
+    <style rel="stylesheet">
+        h1 {
+          font-size: 4rem;
+        }
+          
+        .big-symbol,
+        .symbol {
+            letter-spacing: -.33em !important;
+            margin-right: .33em !important;
+        }
+
+        .btn-secondary {
+            background-color: #07b;
+        }
+
+        .btn-lg {
+            padding: .5rem 2rem;
+        }
+
+        .custom-select {
+            flex: none !important;
+            width: 6.3rem !important;
+        }
+
+        .font-mono {
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .text-left {
+            float: left;
+        }
+
+        .navbar-nav {
+            color: #c0c;
+        }
+
+        #version {
+            text-transform: lowercase !important;
+        }
+    </style>
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" rel="icon" type="image/x-icon">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="https://swapship.org"><span class="symbol">V=</span> PAYSHIP<sup>VSDC <small id="version">v-.-.-</small></sup></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse text-right pr-3" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">                    
+                    <li class="nav-item">
+                      <a class="nav-link" href="index.html"><span>«BACK</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <a id="mint"><br /><br /></a>
+
+    <section>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="pt-5 pb-5">
+                        <h6 class="text-center">MINT &amp; REDEEM VSDC</h6>
+                        <hr />
+                        <form class="shadow-lg p-3 mb-5 bg-white rounded">
+                            <input id="swapApproval" type="hidden" value="1000000">
+                            <small class="form-text text-white text-left font-mono badge bg-danger"><span id="eth-address">NO WALLET CONNECTED</span></small>
+                            <small class="form-text text-muted text-right font-mono"><span id="balanceFrom">&mdash;</span></small>
+                            <div id="swapFrom" class="input-group mt-1 mb-1">
+                                <input type="decimal" class="form-control form-control-lg" placeholder="0.00" aria-label="Amount" disabled>
+                                <select class="form-control custom-select custom-select-lg" aria-label="Token" disabled>
+                                    <option value="ETH" selected="selected">ETH</option>
+                                    <option value="VSDC">VSDC</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button id="btn-rotate" type="button" class="btn btn-lg btn-light pt-0 pb-0 rounded-pill" disabled><b>&#8675;</b></button>
+                            </div>
+                            <div id="swapTo" class="input-group mt-1">
+                                <input type="decimal" class="form-control form-control-lg" placeholder="0.00" aria-label="Amount" disabled>
+                                <select class="form-control custom-select custom-select-lg" aria-label="Token" disabled>
+                                    <option value="ETH">ETH</option>
+                                    <option value="VSDC" selected="selected">VSDC</option>
+                                </select>
+                            </div>
+                            <small class="form-text text-muted text-right font-mono"><span id="balanceTo">&mdash;</span></small>
+                            <hr />
+                            <small class="form-text text-muted float-right mt-0">
+                                1 ETH = <span id="eth-price">&mdash;</span> VSDC
+                            </small>
+                            <small class="form-text text-muted">
+                                Slippage: 0%
+                                <br />
+                                Fee: 0.5%
+                            </small>
+                            <div class="text-center">
+                                <button id="btn-connect" type="button" class="btn btn-lg btn-secondary rounded-pill mt-3 mb-3">Connect Wallet</button>
+                            </div>
+
+                            <div class="alert alert-danger" id="alert-error-https" style="display: none">
+                                    No HTTPS connection!
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5">
+                        <p><small>
+                            Regulators, particularly in the US and EU, are always trying to expand their oppressive measures of control under the disguise of "protecting" the investors. We believe that investors are smart, diligent &amp; independent adults. Therefore, please acknowledge that by connecting your self-custodian wallet to this service you are accepting the following Terms of Service:<br />
+                            <strong>You shall use this service only with accordance of all the laws and regulations you are currently under. We shall bear no responsibility over unlawful or unregulated use of this service. This is an interface to experimental smart contracts. Your funds are at risk.</strong> DYOR NFA YOLO.
+                            <hr />
+                            This web page is an instance of the open source interface to the Payship platform smart contracts. You too can publish this interface using nothing more than a static hosting web server.<br />
+                            Go to <a href="https://github.com/Payship/frontend">Payship Frontend GitHub repository</a> to learn more.
+                        </small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <header class="masthead text-center text-white">
+        <div class="masthead-content">
+            <div class="container">
+                <h1 class="masthead-heading mb-0"></h1>
+                <br />
+                <h6 class="mb-0 text-muted">Virtual Stable Denomination Contract</h6>
+                <br />
+                <h1 class="mt-0 mb-2"><span class="symbol">V=</span> PAYSHIP<sup>VSDC</sup></h1>
+                <br />
+                <h5 class="mb-0">In-dApp coin securing the Payship platform.</h5>
+                <br />
+            </div>
+        </div>
+        <div id="simulation"></div>
+    </header>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-black">
+        <div class="container">
+            <p class="m-0 text-center text-uppercase small"><a href="index.html">HOME</a></p>
+            <hr />
+            <p class="m-0 text-center text-white small"><span class="symbol">V=</span> PAYSHIP.org &copy; 2021&mdash;2024</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+
+    <script>
+"use strict";
+
+const CID = 8453; // 1 - Mainnet, 5 - Goerli, 8453 - Base Mainnet
+
+let accounts;
+let provider;
+let network;
+let signer;
+
+let lastAddress;
+let lastEthPrice;
+let lastEthBalance;
+let lastVsdcBalance;
+
+let lastSwapFrom = 'ETH';
+let lastSwapTo = 'VSDC';
+
+let vsdcContract;
+let faucethContract;
+
+async function onConnect() {
+    if (confirm("Terms of Service: You shall use this service only with accordance of all the laws and regulations you are currently under. We shall bear no responsibility over unlawful or unregulated use of this service. This is an interface to experimental smart contracts. Your funds are at risk. DYOR NFA YOLO & F#CK SEC.")) {
+
+        if (window.ethereum) {
+            provider = new ethers.providers.Web3Provider(window.ethereum)
+            accounts = await provider.send("eth_requestAccounts", []);
+            afterConnect();
+        }
+        else if (window.web3) {
+            provider = new ethers.providers.Web3Provider(window.web3.currentProvider);
+            accounts = provider.provider.accounts;
+            afterConnect();
+        }
+
+    }
+
+    return false;
+}
+
+async function updatePrice() {
+    try {
+        lastEthPrice = forNum(await faucethContract.getPrice());
+    }
+    catch (error) {
+        lastEthPrice = 0;
+        console.log("lastEthPrice\n\n" + error);
+    }
+
+    $("#eth-price").text(lastEthPrice).fadeOut('125', function() {
+        $("#eth-price").fadeIn('125'); 
+    });
+}
+ 
+async function updateBalance() {
+    try {
+        lastEthBalance = forNum(await signer.getBalance());
+    }
+    catch (error) {
+        lastEthBalance = 0;
+        console.log("lastEthBalance\n\n" + error);
+    }
+
+    try {
+        lastVsdcBalance = forNum(await vsdcContract.balanceOf(lastAddress));
+    }
+    catch (error) {
+        lastVsdcBalance = 0;
+        console.log("lastVsdcBalance\n\n" + error);
+    }
+
+    if ($('#swapFrom select').val() == 'ETH') {
+        $('#balanceFrom').text(lastEthBalance);
+        $('#balanceTo').text(lastVsdcBalance);
+    }
+    if ($('#swapFrom select').val() == 'VSDC') {
+        $('#balanceTo').text(lastEthBalance);
+        $('#balanceFrom').text(lastVsdcBalance);
+    }
+}
+
+async function afterConnect() {
+    $('#btn-connect').text('Loading . . .');
+
+    network = await provider.getNetwork();
+    lastAddress = accounts[0];
+
+    try {
+        if (network.chainId != CID) {
+            await provider.send("wallet_switchEthereumChain",[{ chainId: ethers.utils.hexValue(CID) }]);
+            window.location.reload();
+        }
+    }
+    catch (error) {
+        window.location.reload();
+    }
+
+    signer = provider.getSigner();
+
+    vsdcContract = new ethers.Contract(VSDCAddress, VSDCABI, signer);
+    faucethContract = new ethers.Contract(FaucethAddress, FaucethABI, signer);
+
+    updatePrice();
+    updateBalance();
+
+    setInterval(function(){ updatePrice(); }, 20000);
+
+    $('#eth-address').text(forAdd(lastAddress)).parent().removeClass('bg-danger').addClass('bg-success');
+    $('#btn-connect').text('Swap');
+
+    enableUI();
+
+    document.querySelector("#btn-connect").removeEventListener("click", onConnect);
+    document.querySelector("#btn-connect").addEventListener("click", onSwap);
+    document.querySelector("#btn-rotate").addEventListener("click", onTickerRotate);
+
+    document.querySelector("#swapFrom input").addEventListener("keyup", onValueChange);
+    document.querySelector("#swapTo input").addEventListener("keyup", onValueChange);
+
+    document.querySelector("#swapFrom select").addEventListener("change", onTickerChange);
+    document.querySelector("#swapTo select").addEventListener("change", onTickerChange);
+}
+
+async function onCheckAllowance() {
+    if($('#swapFrom select').val() == 'VSDC') {
+        let allowance = await vsdcContract.allowance(lastAddress,FaucethAddress);
+        let offer = toBigNum('#swapFrom input').toString();
+
+        if (bigLt(allowance,offer)) {
+            $('#btn-connect').text('Approve');
+            document.querySelector("#btn-connect").removeEventListener("click", onSwap);
+            document.querySelector("#btn-connect").addEventListener("click", onApprove);
+        }
+        else {
+            $('#btn-connect').text('Swap');
+            document.querySelector("#btn-connect").removeEventListener("click", onApprove);
+            document.querySelector("#btn-connect").addEventListener("click", onSwap);
+        }
+    }
+}
+
+async function onTickerRotate() {
+    let tempValue = $('#swapFrom input').val();
+    let tempTicker = $('#swapFrom select').val();
+    let tempBalance = $('#balanceFrom').text();
+
+    $('#swapFrom input').val( $('#swapTo input').val() );
+    $('#swapFrom select').val( $('#swapTo select').val() );
+    $('#balanceFrom').text( $('#balanceTo').text() );
+
+    $('#swapTo input').val(tempValue);
+    $('#swapTo select').val(tempTicker);
+    $('#balanceTo').text(tempBalance);
+
+    lastSwapFrom = $('#swapFrom select').val();
+    lastSwapTo = $('#swapTo select').val();
+
+    onCheckAllowance();
+
+    return false;
+}
+
+async function onValueChange(event) {
+    let thisTarget = $(event.currentTarget);
+    let thisParent = thisTarget.parent();
+
+    if (thisParent.attr('id') == 'swapFrom') {
+        if ($('#swapFrom select').val() == 'ETH') {
+            $('#swapTo input').val( parseFloat($('#swapFrom input').val() * lastEthPrice).toFixed(18) );
+        }
+        if ($('#swapFrom select').val() == 'VSDC') {
+            $('#swapTo input').val( parseFloat($('#swapFrom input').val() / lastEthPrice).toFixed(18) );
+            onCheckAllowance();
+        }
+    }
+    if (thisParent.attr('id') == 'swapTo') {
+        if ($('#swapTo select').val() == 'ETH') {
+            $('#swapFrom input').val( parseFloat($('#swapTo input').val() * lastEthPrice).toFixed(18) );
+            onCheckAllowance();
+        }
+        if ($('#swapTo select').val() == 'VSDC') {
+            $('#swapFrom input').val( parseFloat($('#swapTo input').val() / lastEthPrice).toFixed(18) );
+        }
+    }
+
+    return false;
+}
+
+async function onTickerChange(event) {
+    let thisTarget = $(event.currentTarget);
+    let thisParent = thisTarget.parent();
+
+    if (thisParent.attr('id') == 'swapFrom' && thisTarget.val() != lastSwapFrom) {
+        thisTarget.val(lastSwapFrom);
+        onTickerRotate();
+    }
+    if (thisParent.attr('id') == 'swapTo' && thisTarget.val() != lastSwapTo) {
+        thisTarget.val(lastSwapTo);
+        onTickerRotate();
+    }
+
+    return false;
+}
+
+function beforeTransaction() {
+    disableUI();
+    return false;
+}
+
+async function onSwap() {
+    let tx = beforeTransaction();
+    let size = $('#swapFrom select').val() == 'ETH' ? toBigNum('#swapFrom input', 'ether') : toBigNum('#swapFrom input');
+
+    if (size != 0) {
+        try {
+            if ($('#swapFrom select').val() == 'ETH') {
+                tx = await faucethContract.mint({ value: size });
+            }
+            else if ($('#swapFrom select').val() == 'VSDC') {
+                tx = await faucethContract.burn(size);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    onTransaction(tx);
+    return false;
+}
+
+async function onApprove() {
+    let tx = beforeTransaction();
+
+    try {
+        tx = await vsdcContract.approve(FaucethAddress, toBigNum('#swapApproval'));
+    } catch (error) {
+        console.log(error);
+    }
+
+    onTransaction(tx);
+
+    return false;
+}
+
+async function onTransaction(tx) {
+    if (tx) {
+        $('#btn-connect').text('Confirming . . .');
+
+        await tx.wait().then(function(result) {
+            updateBalance();
+            enableUI();
+
+            if (result.status) {
+                $('#btn-connect').text('Confirmed !');
+            }
+            else {
+                $('#btn-connect').text('Failure !');
+            }
+
+            setTimeout(function() {
+                document.querySelector("#btn-connect").removeEventListener("click", onApprove);
+                document.querySelector("#btn-connect").addEventListener("click", onSwap);
+
+                $('#btn-connect').text('Swap');
+            }, 3000)
+        });
+    }
+    else {
+        enableUI();
+    }
+}
+
+window.addEventListener('load', async () => {
+    $('#version').text(version);
+    
+    $.getScript('static/structs-' + CID + '.js?ver=' + version, function() {
+        document.querySelector("#btn-connect").addEventListener("click", onConnect);
+        onConnect();
+    });
+});
+
+function toBigNum(selector,dec = 18) {
+    return ethers.utils.parseUnits(($(selector).val() ? $(selector).val() : '0'),dec);
+}
+
+function bigLt(above,below,cast = false) {
+    if (cast) {
+        above = to18(above);
+        below = to18(below);
+    }
+
+    return ethers.BigNumber.from(above).lt(below);
+}
+
+function forNum(val, dec = 18) {
+    return ethers.utils.formatUnits(val, dec, {commify: true, pad: true});
+}
+
+function forAdd(val) {
+    return val.replace(val.substring(6,38),'..')
+}
+
+function enableUI() {
+    $('#swapFrom input, #swapFrom select, #swapTo input, #swapTo select, #btn-rotate, #btn-connect').removeAttr('disabled');
+}
+
+function disableUI() {
+    $('#swapFrom input, #swapFrom select, #swapTo input, #swapTo select, #btn-rotate, #btn-connect').attr('disabled', true);
+}
+
+    </script>
+</body>
+</html>
