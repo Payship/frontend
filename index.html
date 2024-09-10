@@ -7,21 +7,37 @@
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" name="viewport">
   <meta content="website" property="og:type">
-  <meta content="Payship.org (PSHP) Your OG DeFi Spaceship to the Moon! 🚀" property="og:title">
+  <meta content="Payship.org (PSHP) Your DeFi Spaceship to the Moon! 🚀" property="og:title">
   <meta content="https://payship.org/static/img/payship.png" property="og:image">
   <meta content="Forget slippage, bots & mev. Get low fees & low gas.<br />Swaps, Perps, Loans & Farms secured by Chainlink. Enjoy!" property="og:description">
   <meta content="Forget slippage, bots & mev. Get low fees & low gas.<br />Swaps, Perps, Loans & Farms secured by Chainlink. Enjoy!" name="description">
 
-  <title>Payship.org (PSHP) Your OG DeFi Spaceship to the Moon! 🚀</title>
+  <title>Payship.org (PSHP) Your DeFi Spaceship to the Moon! 🚀</title>
   
   <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-  <link href="static/css/one-page-wonder.min.css" rel="stylesheet">
+  <link href="static/styles-2.css" rel="stylesheet">
 
   <style>
     h2 a {
       color: inherit;
       text-decoration: underline;
+    }
+    hr.stylish {
+      margin: 0.4rem auto 2rem;
+      background-color: #444;
+      max-width: 66%;
+    }
+    sub {
+      top: 0;
+    }
+    sub.stylish {
+      position: relative;
+      font-size: 0.75rem;
+      left: -1.75rem;
+    }
+    .nav-off {
+      opacity: 0.5;
     }
     .nav-link {
       text-transform: none !important;
@@ -29,6 +45,9 @@
     .nav-link:hover {
       background-color: #222;
       border-radius: 8px;
+    }
+    .nav-link.nav-off:hover {
+      background-color: transparent;
     }
     .rounded-pill {
       border-radius: 18px !important;
@@ -42,7 +61,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="https://payship.org"><span class="symbol">(=)</span> PAYSHIP<sup>ORG</sup></a>
+      <a class="navbar-brand" href="https://payship.org"><span class="symbol">(=)</span> PAYSHIP<sub>.ORG</sub></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -54,15 +73,15 @@
           </li>
           <li class="d-none d-sm-block">.</li>
           <li class="nav-item">
-            <a class="nav-link" href="#">PERPS</a>
+            <a class="nav-link nav-off">PERPS</a>
           </li>
           <li class="d-none d-sm-block">.</li>
           <li class="nav-item">
-            <a class="nav-link" href="#">LOANS</a>
+            <a class="nav-link nav-off">LOANS</a>
           </li>
           <li class="d-none d-sm-block">.</li>
           <li class="nav-item">
-            <a class="nav-link" href="#">FARMS</a>
+            <a class="nav-link" href="farms.html">FARMS</a>
           </li>
           
           <li class="d-none d-sm-block">. . .</li>
@@ -95,12 +114,15 @@
       <div class="container">
         <h1 class="masthead-heading mt-0 mb-0"><span class="symbol">(=)</span></h1>
         <br />
-        <h1 class="masthead-heading mb-0">PAYSHIP<sup>ORG</sup></h1>
+        <h1 class="masthead-heading mb-0">PAYSHIP<sub class="stylish">.ORG</sub></h1>
         <br />
-        <h2 class="mb-4">Your OG DeFi Spaceship to the Moon! 🚀</h2>
-        <h4>Forget slippage, bots &amp; mev. Get low fees &amp; low gas.<br />Swaps, Perps, Loans &amp; Farms secured by Chainlink.</h4>
+        <h2 class="mb-4">Your DeFi Spaceship to the Moon! 🚀</h2>
+        <hr class="stylish" />
+        <h4 class="stylish">Forget Slippage, Bots &amp; MEV. Get Low Fees &amp; Low Gas.<br />Try Swaps, Perps, Loans &amp; Farms Secured by Chainlink &amp; VSDC.</h4>
+        
         <br />
-        <a href="swaps.html" class="btn btn-secondary btn-xl rounded-pill mt-5">Open <b>SWAPS</b></a>
+        <a href="swaps.html" class="btn btn-secondary btn-xl rounded-pill mt-5"><b>SWAPS</b></a>
+        <a href="farms.html" class="btn btn-secondary btn-xl rounded-pill mt-5"><b>FARMS</b></a>
         <a href="https://app.uniswap.org/#/swap?outputCurrency=0x88d59ba796fdf639ded3b5e720988d59fdb71eb8&inputCurrency=ETH" class="btn btn-primary btn-xl rounded-pill mt-5">Buy PSHP</a>
       </div>
     </div>
@@ -110,14 +132,11 @@
 
   <section id="about">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-12">
-          <br />
+      <div class="row align-items-top">
+        <div class="col-md-5">
+            <h2 class="masthead-heading text-center"><span class="big-symbol">(=)</span></h2>
         </div>
-        <div class="col-md-4">
-            <h1 class="masthead-heading text-center"><span class="big-symbol">(=)</span></h1>
-        </div>
-        <div class="col-md-8">
+        <div class="col-md-7 mt-5">
             <h2 class="display-4">DeFi Everything</h2>
             <p><b>Payship</b> is a fully decentralized platform hosting a suite of crypto synthetic trading dApps: SWAPS, PERPS, LOANS and FARMS. All dApps are secured by Chainlink price feed oracles and integrated with each other through a common means of exchange, the VSDC stable denominator backed by real ETH and always priced at one US dollar.</p>
             <p>Operating since 2020 as an ecosystem of smart contracts and communities, Payship integrated in 2023 under one brand and deployed on the Ethereum Mainnet, Coinbase Base and Goerli Testnet.</p>
@@ -126,16 +145,16 @@
     </div>
   </section>
   
-  <br /><br />
+  <br /><br /><br /><br />
 
   <section>
     <div class="container">
-      <div class="row align-items-center">
+      <div class="row align-items-top">
         <div class="col-md-5 order-md-2">
             <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol">(-§-)</span></h2>
         </div>
         <div class="col-md-7 order-md-1">
-            <small class="text-muted"><b>Status: ONLINE</b></small>
+            <small class="text-muted"><b>Status: Released</b></small>
             <h2 class="display-4"><a href="swaps.html">Swap Synthetics</a></h2>
             <p><b>Payship SWAPS</b> decentralized exchange (DEX) for synthetic assets allows you to swap hundreds of tokens on chains like Ethereum Mainnet and Coinbase Base (coming soon to Arbitrum and Optimism too). Using Chainlink price feed oracles Payship DEX offers accurate prices, zero price impact during swaps, is immune to flash loan attacks, has no slippage, no bots, low fees and low gas costs. Your Payship SWAPS volume counts towards your Payship FARMS rewards!</p>
             <p>To start using Payship SWAPS you first need VSDC tokens in your wallet. You can mint VSDC using ETH. All synthetic assets are priced in US dollars and can be swapped to and from VSDC, or with each other directly.</p>
@@ -144,16 +163,16 @@
     </div>
   </section>
   
-  <br /><br />
+  <br /><br /><br /><br />
 
   <section>
     <div class="container">
-      <div class="row align-items-center">
+      <div class="row align-items-top">
           <div class="col-md-5">
             <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol">(-»)</span></h2>
         </div>
         <div class="col-md-7">
-            <small class="text-muted"><b>Status: Work in Progress</b></small>
+            <small class="text-muted"><b>Status: In Progress</b></small>
             <h2 class="display-4">Lend &amp; Borrow <br />Hundreds of Tokens</h2>
             <p><b>Payship LOANS</b> decentralized lending and borrowing allows you to deposit and borrow hundreds of tokens on chains like Ethereum Mainnet and Coinbase Base (coming soon to Arbitrum and Optimism too). Based on the Payship SWAPS technology, and using Chainlink price feed oracles, Payship LOANS are immune to flash loan attacks. Unlike other lending dApps, Payship LOANS offer a stable interest rate system and fixed-interest loans.</p>
             <p>Moreover, a special basket of super-tokens, like PSHP, offer low-interest, no-liquidation VSDC loans. In turn, VSDC can be used across many Payship dApps, while your Payship LOANS assets accumulate rewards with Payship FARMS!</p>
@@ -162,16 +181,16 @@
     </div>
   </section>
   
-  <br /><br />
+  <br /><br /><br /><br />
   
   <section>
     <div class="container">
-      <div class="row align-items-center">
+      <div class="row align-items-top">
           <div class="col-md-5 order-md-2">
             <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol">(÷)</span></h2>
         </div>
         <div class="col-md-7 order-md-1">
-            <small class="text-muted"><b>Status: Work in Progress</b></small>
+            <small class="text-muted"><b>Status: In Progress</b></small>
             <h2 class="display-4">Opt for Fun <br />&amp; Profit or Loss</h2>
             <p><b>Payship PERPS</b> decentralized Crypto Contracts for Difference (CCFD) allow you to take part in the market movements without owning the underlying assets. With CCFDs you can bet on the direction the asset price takes and in case you are correct, reap the benefits&mdash;with leverage! At the same time, your losses are strictly limited to the deposited collateral you make your bets with.</p>
             <p>Based on Payship SWAPS technology, incorporating Chainlink price feed oracles and our experience from the LIQLO betting that paid out more than 100 ETH in winnings during its run in 2020-2021, Payship PERPS offer new and fun ways to experience crypto.</p>
@@ -180,33 +199,35 @@
     </div>
   </section>
   
-  <br /><br />
+  <br /><br /><br /><br />
   
   <section>
     <div class="container">
-      <div class="row align-items-center">
+      <div class="row align-items-top">
           <div class="col-md-5">
             <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol">(+)</span></h2>
         </div>
         <div class="col-md-7">
-            <small class="text-muted"><b>Status: Work in Progress</b></small>
-            <h2 class="display-4">Earn Rewards &amp; Govern</h2>
-            <p><b>Payship FARMS</b> decentralized staking for rewards and governance allows you to reap even more benefits just by using Payship dApps and staking PSHP. Your activity is rewarded with staked Payship (stPSHP) that in turn allows you to rank up the chart and take part in the bi-annual rewards distribution and interest rate governance votes.</p>
+            <br /><br />
+            <small class="text-muted"><b>Status: Released</b></small>
+            <h2 class="display-4"><a href="farms.html">Earn Rewards &amp; Govern</a></h2>
+            <p><b>Payship FARMS</b> decentralized staking for rewards and governance allows you to reap even more benefits just by using Payship dApps and staking PSHP. Your activity is rewarded with Payship Voting Rights (vrPSHP) that in turn allows you to rank up the chart and take part in the rewards distributions and interest rate governance votes.</p>
         </div>
       </div>
     </div>
   </section>
   
-  <br /><br />
+  <br /><br /><br /><br />
   
   <section>
     <div class="container">
-      <div class="row align-items-center">
+      <div class="row align-items-top">
           <div class="col-md-5 order-md-2">
-            <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol" style="letter-spacing: -5.5rem">V=</span></h2>
+            <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol" style="letter-spacing: -3.3rem">V-</span></h2>
         </div>
         <div class="col-md-7 order-md-1">
-            <small class="text-muted"><b>Status: ONLINE</b></small>
+            <br /><br />
+            <small class="text-muted"><b>Status: Released</b></small>
             <h2 class="display-4"><a href="vsdc.html">Mint &amp; Redeem VSDC</a></h2>
             <p><b>Payship VSDC</b> stable denominator is at the core of the Payship platform. VSDC is backed by real ETH and is always priced at one US dollar while used within the Payship dApps. It has a simple and efficient smart contract code based on the wildly popular WETH token. It ties Payship together.</p>
         </div>
@@ -214,11 +235,11 @@
     </div>
   </section>
   
-  <br /><br />
+  <br /><br /><br /><br />
 
   <section>
     <div class="container">
-      <div class="row align-items-center">
+      <div class="row align-items-top">
         <div class="col-lg-12 text-muted p-3">
           <h6>RISK &amp; PRIVACY POLICY</h6>
           

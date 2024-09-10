@@ -10,16 +10,18 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
     <script type="text/javascript" src="static/scripts.js"></script>
-    <script type="text/javascript" src="static/version.js"></script>
+    <script type="text/javascript">const version = 'v1.2.4'; const variant = 'D';</script>
 
     <style rel="stylesheet">
         h1 {
           font-size: 4rem;
         }
+        sub {
+            top: 0;
+        }
           
         .big-symbol,
         .symbol {
-            letter-spacing: -.33em !important;
             margin-right: .33em !important;
         }
 
@@ -60,7 +62,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="https://swapship.org"><span class="symbol">V=</span> PAYSHIP<sup>VSDC <small id="version">v-.-.-</small></sup></a>
+            <a class="navbar-brand" href="https://payship.org"><span class="symbol">V-</span> PAYSHIP<sub>/VSDC <small id="version">v-.-.-</small></sub></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -84,7 +86,7 @@
                         <h6 class="text-center">MINT &amp; REDEEM VSDC</h6>
                         <hr />
                         <form class="shadow-lg p-3 mb-5 bg-white rounded">
-                            <input id="swapApproval" type="hidden" value="1000000">
+                            <input id="swapApproval" type="hidden" value="1000000000000000000">
                             <small class="form-text text-white text-left font-mono badge bg-danger"><span id="eth-address">NO WALLET CONNECTED</span></small>
                             <small class="form-text text-muted text-right font-mono"><span id="balanceFrom">&mdash;</span></small>
                             <div id="swapFrom" class="input-group mt-1 mb-1">
@@ -112,7 +114,9 @@
                             <small class="form-text text-muted">
                                 Slippage: 0%
                                 <br />
-                                Fee: 0.5%
+                                Fee: &ndash;0.4%
+                                <br />
+                                XP: +0.1%
                             </small>
                             <div class="text-center">
                                 <button id="btn-connect" type="button" class="btn btn-lg btn-secondary rounded-pill mt-3 mb-3">Connect Wallet</button>
@@ -130,9 +134,19 @@
                             Regulators, particularly in the US and EU, are always trying to expand their oppressive measures of control under the disguise of "protecting" the investors. We believe that investors are smart, diligent &amp; independent adults. Therefore, please acknowledge that by connecting your self-custodian wallet to this service you are accepting the following Terms of Service:<br />
                             <strong>You shall use this service only with accordance of all the laws and regulations you are currently under. We shall bear no responsibility over unlawful or unregulated use of this service. This is an interface to experimental smart contracts. Your funds are at risk.</strong> DYOR NFA YOLO.
                             <hr />
-                            This web page is an instance of the open source interface to the Payship platform smart contracts. You too can publish this interface using nothing more than a static hosting web server.<br />
-                            Go to <a href="https://github.com/Payship/frontend">Payship Frontend GitHub repository</a> to learn more.
+                            This website is an instance of the open source interface to the Payship platform. You too can host this interface using nothing more than a static hosting web server. Go to <a href="https://github.com/Payship/frontend">Payship GitHub</a> to see how.
                         </small></p>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="#" id="btn-display"><b>ADD TO METAMASK</b></a><br />
+                                <small class="text-info text-muted">
+                                    Display all Payship tokens in your wallet list on apps like MetaMask.
+                                </small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,7 +160,7 @@
                 <br />
                 <h6 class="mb-0 text-muted">Virtual Stable Denomination Contract</h6>
                 <br />
-                <h1 class="mt-0 mb-2"><span class="symbol">V=</span> PAYSHIP<sup>VSDC</sup></h1>
+                <h1 class="mt-0 mb-2"><span class="symbol">V-</span> PAYSHIP/<sub>VSDC</sub></h1>
                 <br />
                 <h5 class="mb-0">In-dApp coin securing the Payship platform.</h5>
                 <br />
@@ -160,7 +174,7 @@
         <div class="container">
             <p class="m-0 text-center text-uppercase small"><a href="index.html">HOME</a></p>
             <hr />
-            <p class="m-0 text-center text-white small"><span class="symbol">V=</span> PAYSHIP.org &copy; 2021&mdash;2024</p>
+            <p class="m-0 text-center text-white small"><span class="symbol">V-</span> PAYSHIP.org &copy; 2021&mdash;2024</p>
         </div>
         <!-- /.container -->
     </footer>
@@ -168,7 +182,7 @@
     <script>
 "use strict";
 
-const CID = 8453; // 1 - Mainnet, 5 - Goerli, 8453 - Base Mainnet
+const CID = 8453; // 1 - Mainnet, 5 - Goerli, 11155111 - Sepolia, 8453 - Base Mainnet, 84532 - Base Sepolia
 
 let accounts;
 let provider;
@@ -255,11 +269,37 @@ async function afterConnect() {
     try {
         if (network.chainId != CID) {
             await provider.send("wallet_switchEthereumChain",[{ chainId: ethers.utils.hexValue(CID) }]);
-            window.location.reload();
+            window.location.reload(true);
         }
     }
     catch (error) {
-        window.location.reload();
+        if (CID == 84532) {
+            await provider.send("wallet_addEthereumChain",[{
+                chainId: "0x14a34",
+                rpcUrls: ["https://sepolia.base.org/"],
+                chainName: "Base Sepolia",
+                nativeCurrency: {
+                  name: "ETH",
+                  symbol: "ETH",
+                  decimals: 18
+                },
+                blockExplorerUrls: ["https://sepolia.basescan.org/"]
+            }]);
+        }
+        if (CID == 8453) {
+            await provider.send("wallet_addEthereumChain",[{
+                chainId: "0x2105",
+                rpcUrls: ["https://mainnet.base.org/"],
+                chainName: "Base Mainnet",
+                nativeCurrency: {
+                  name: "ETH",
+                  symbol: "ETH",
+                  decimals: 18
+                },
+                blockExplorerUrls: ["https://basescan.org/"]
+            }]);
+        }
+        window.location.reload(true);
     }
 
     signer = provider.getSigner();
@@ -279,6 +319,8 @@ async function afterConnect() {
 
     document.querySelector("#btn-connect").removeEventListener("click", onConnect);
     document.querySelector("#btn-connect").addEventListener("click", onSwap);
+
+    document.querySelector("#btn-display").addEventListener("click", displayTokens);
     document.querySelector("#btn-rotate").addEventListener("click", onTickerRotate);
 
     document.querySelector("#swapFrom input").addEventListener("keyup", onValueChange);
@@ -369,6 +411,42 @@ async function onTickerChange(event) {
     return false;
 }
 
+async function displayTokens() {
+    try {
+        // Request MetaMask to add the token
+        await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20',
+                options: {
+                    address: VSDCAddress,
+                    symbol: "VSDC",
+                    decimals: 18,
+                    image: "https://payship.org/static/img/logo_vsdc.png",
+                },
+            },
+        });
+
+        await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20',
+                options: {
+                    address: XPTSAddress,
+                    symbol: "XPSHP",
+                    decimals: 18,
+                    image: "https://payship.org/static/img/logo_vpts.png",
+                },
+            },
+        });
+
+    } catch (error) {
+        console.error('Error adding token:', error);
+    }
+
+    return false;
+}
+
 function beforeTransaction() {
     disableUI();
     return false;
@@ -381,10 +459,10 @@ async function onSwap() {
     if (size != 0) {
         try {
             if ($('#swapFrom select').val() == 'ETH') {
-                tx = await faucethContract.mint({ value: size });
+                tx = await faucethContract['mint()']({ value: size });
             }
             else if ($('#swapFrom select').val() == 'VSDC') {
-                tx = await faucethContract.burn(size);
+                tx = await faucethContract['burn(uint256)'](size);
             }
         } catch (error) {
             console.log(error);
@@ -440,7 +518,7 @@ async function onTransaction(tx) {
 window.addEventListener('load', async () => {
     $('#version').text(version);
     
-    $.getScript('static/structs-' + CID + '.js?ver=' + version, function() {
+    $.getScript('static/structs-' + CID + '-' + variant + '.js?ver=' + version, function() {
         document.querySelector("#btn-connect").addEventListener("click", onConnect);
         onConnect();
     });

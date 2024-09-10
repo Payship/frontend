@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Synthetic Decentralized Exchange Secured by VSDC and Chainlink.">
 
-    <title>Payship.org SWAPS</title>
+    <title>Payship.org PERPS</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
@@ -16,13 +16,9 @@
         h1 {
             font-size: 4rem;
         }
-        sub {
-            top: 0;
-        }
 
         #from-balance,
-        #to-balance,
-        table tr {
+        #to-balance {
             cursor: pointer;
         }
 
@@ -42,6 +38,10 @@
 
         a.text-muted {
             text-decoration: underline;
+        }
+
+        .btn-hidden {
+            display: none;
         }
 
         .btn-secondary {
@@ -107,7 +107,7 @@
     <!-- Navigation -->
     <nav id="header" class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/"><span class="symbol">(-§-)</span> PAYSHIP<sub>/SWAPS <small id="version">v-.-.-</small></sub></a>
+            <a class="navbar-brand" href="/"><span class="symbol">(-§-)</span> PAYSHIP<sup>PERPS <small id="version">v-.-.-</small></sup></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -128,7 +128,7 @@
             <div id="container-vsync" class="row align-items-top">
                 <div class="col-lg-6">
                     <div class="pt-5 pb-5">
-                        <h6 class="text-center">SWAP SYNTHETIC ASSETS</h6>
+                        <h6 class="text-center">GO LONG OR SHORT</h6>
                         <hr />
                         <form class="shadow-lg p-3 mb-5 bg-white rounded">
                             <input id="swapApproval" type="hidden" value="1000000000000000000">
@@ -136,29 +136,30 @@
                             <small class="form-text text-muted text-right font-mono"><span id="from-balance" alt="from-swap">&mdash;</span></small>
                             <div id="from-swap" class="input-group mt-1 mb-1">
                                 <input type="decimal" class="form-control form-control-lg" placeholder="0.0" aria-label="Amount" disabled>
-                                <button alt="from-swap" type="button" value="ETH" class="form-control custom-select custom-select-lg" aria-label="Swap From Token" data-toggle="modal" data-target="#folio-modal" disabled>ETH</button>
+                                <button alt="from-swap" type="button" value="VSDC" class="form-control custom-select custom-select-lg" aria-label="Swap From Token" data-toggle="modal" data-target="#folio-modal" disabled>VSDC</button>
                             </div>
                             <div class="text-center">
-                                <button id="btn-rotate" type="button" class="btn btn-lg btn-light pt-0 pb-0 rounded-pill" disabled><b>&#8675;</b></button>
+                                <div id="btn-rotate" class="mt-2 mb-2 rounded-pill" disabled><b>&#8675;</b></div>
                             </div>
                             <div id="to-swap" class="input-group mt-1">
                                 <input type="decimal" class="form-control form-control-lg" placeholder="0.0" aria-label="Amount" disabled>
-                                <button alt="to-swap" type="button" value="VSDC" class="form-control custom-select custom-select-lg" aria-label="Swap To Token" data-toggle="modal" data-target="#folio-modal" disabled>VSDC</button>
+                                <button alt="to-swap" type="button" value="ETH" class="form-control custom-select custom-select-lg" aria-label="Swap To Token" data-toggle="modal" data-target="#folio-modal" disabled>ETH</button>
                             </div>
-                            <small class="form-text text-muted text-right font-mono"><span id="to-balance" alt="to-swap">&mdash;</span></small>
-                            <hr />
+                            <!--<small class="form-text text-muted text-right font-mono"><span id="to-balance" alt="to-swap">&mdash;</span></small>-->
+
+                            <hr class="mt-4" />
                             <small class="form-text text-muted float-right mt-0">
-                                <span id="to-size">1</span> <span id="to-ticker">VSDC</span> = <span id="from-size">&mdash;</span> <span id="from-ticker">ETH</span>
+                                <span id="to-size">1</span> <span id="to-ticker">ETH</span> = <span id="from-size">&mdash;</span> <span id="from-ticker">VSDC</span>
                             </small>
                             <small class="form-text text-muted">
                                 Slippage: 0%
                                 <br />
-                                Fee: &ndash;<span id="fee">0.4</span>%
-                                <br />
-                                XP: +0.1%
+                                Fee: <span id="fee">0.5</span>%
                             </small>
                             <div class="text-center">
-                                <button id="btn-connect" type="button" class="btn btn-lg btn-secondary rounded-pill mt-3 mb-3">Connect Wallet</button>
+                                <button id="btn-long" type="button" class="btn btn-lg btn-secondary rounded-pill mt-3 mb-3">Connect Wallet</button>
+                                &nbsp;
+                                <button id="btn-short" type="button" class="btn btn-lg btn-danger btn-hidden rounded-pill mt-3 mb-3">Short</button>
                             </div>
 
                             <div class="text-danger text-center"><span id="alert-error"></span></div>
@@ -183,7 +184,7 @@
                             <table id="folio" class="table table-hover table-sm table-folio">
                                 <thead>
                                     <tr>
-                                        <th class="td-bald"><small>Wallet</small></th>
+                                        <th class="td-bald"><small>Assets</small></th>
                                         <th class="td-bald"><small>Balance</small></th>
                                         <th class="td-bald"><small>Price</small></th>
                                         <th class="td-bald"><small>Value</small></th>
@@ -212,14 +213,14 @@
                                 <thead id="tips">
                                     <tr>
                                         <td colspan="4" class="text-center">
-                                            <small class="text-muted text-info">Swap ETH to VSDC to start trading. Wrap VSDC into §VSDC to swap faster with lower gas.</small>
+                                            <small class="text-muted text-info">Short or Long ETH using VSDC to start with contracts for difference.</small>
                                         </td>
                                     </tr>
                                 </thead>
                                 
                                 <thead>
                                         <tr>
-                                            <th colspan="4" class="td-bald"><br /><small id="synts-title">Synthetics</small></th>
+                                            <th colspan="4" class="td-bald"><br /><small id="synts-title">Orders</small></th>
                                         </tr>
                                 </thead>
                                 <tbody id="folio-synts" class="table-folio-synts"></tbody>
@@ -233,13 +234,13 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                Volume: $<span id="value-volume">&mdash;</span><br />
+                                Volume: $<span class="value-volume">&mdash;</span><br />
                                 <small class="text-info text-muted">
-                                    Your tx volume farms XP.
+                                    Your transaction volume farms XP.
                                 </small>
                             </div>
                             <div class="col-sm-6 text-right">
-                                Unclaimed: <span id="value-xpts">&mdash;</span> XPSHP<br />
+                                Unclaimed: <span class="value-volume">&mdash;</span> XPSHP<br />
                                 <a href="#" id="btn-claim"><b>CLAIM NOW</b></a>
                             </div>
                         </div>
@@ -267,7 +268,7 @@
                 <br />
                 <h6 class="mb-0 text-muted">Synthetic Decentralized Exchange Secured by VSDC &amp; Chainlink</h6>
                 <br />
-                <h1 class="mt-0 mb-2"><span class="symbol">(-§-)</span> PAYSHIP/<sub>SWAPS</sub></h1>
+                <h1 class="mt-0 mb-2"><span class="symbol">(-§-)</span> PAYSHIP<sup>PERPS</sup></h1>
                 <br />
                 <h5 class="mt-2">Play with DeFi&mdash;Forget slippage, bots &amp; mev. Get low fees &amp; low gas.</h5>
                 <br />
@@ -312,7 +313,7 @@ let provider;
 let network;
 let signer;
 
-let allSynts;
+let allOrders;
 let allTickers = [];
 
 let lastAddress;
@@ -325,8 +326,8 @@ let preloadPriceInterval;
 let livePriceInterval;
 
 let lastSwapButton = 'to-swap';
-let lastSwapFrom = 'ETH';
-let lastSwapTo = 'VSDC';
+let lastSwapFrom = 'VSDC';
+let lastSwapTo = 'ETH';
 let modalOpen = false;
 
 let totalSynts = 0;
@@ -337,7 +338,7 @@ let lastSidTo = 0;
 
 let vsdcContract;
 let faucethContract;
-let swapsyntContract;
+let perpsyntContract;
 
 
 async function onConnect() {
@@ -380,22 +381,33 @@ async function updateVsdcBalance() {
 }
 
 async function updateVolumeBalance() {
+    let faucethVolume;
+    let perpsyntVolume;
+
     try {
-        lastVolumeBalance = bigAdd(
-            await faucethContract.getVolume(lastAddress),
-            await swapsyntContract.getVolume(lastAddress)
-        );
+        faucethVolume = await faucethContract.getVolume(lastAddress);
     }
     catch (error) {
-        lastVolumeBalance = 0;
-        console.log("lastVolumeBalance\n\n" + error);
+        faucethVolume = bigNum("0");
+        console.log("faucethVolume\n\n" + error);
     }
+
+    try {
+        perpsyntVolume = await perpsyntContract.getVolume(lastAddress);
+    }
+    catch (error) {
+        perpsyntVolume = bigNum("0");
+        console.log("perpsyntVolume\n\n" + error);
+    }
+
+    lastVolumeBalance = faucethVolume ? faucethVolume : bigNum("0");
+    lastVolumeBalance = perpsyntVolume && bigLt(0,perpsyntVolume) ? bigAdd(lastVolumeBalance,perpsyntVolume) : lastVolumeBalance;
 }
 
 async function updateTotalSynts() {
     if (totalSynts == 0) {
         try {
-            totalSynts = await swapsyntContract._sid();
+            totalSynts = await perpsyntContract._sid();
         }
         catch (error) {
             console.log("totalSynts\n\n" + error);
@@ -403,13 +415,13 @@ async function updateTotalSynts() {
     }
 }
 
-async function updateAllSynts() {
+async function updateallOrders() {
     try {
-        allSynts = await swapsyntContract.getFolio();
+        allOrders = await perpsyntContract.getFolio();
     }
     catch (error) {
-        allSynts = undefined;
-        console.log(SwapsyntAddress + " allSynts\n\n" + error);
+        allOrders = undefined;
+        console.log(PerpsyntAddress + " allOrders\n\n" + error);
     }
 }
 
@@ -420,34 +432,33 @@ async function updatePrice(sid) {
         preload = true;
     }
 
-    const synt = allSynts[sid];
-    const bytesArray = ethers.utils.arrayify(synt.ticker);
-    const ticker = String.fromCharCode(...bytesArray);
-    const balance = synt.balance;
-    const oracleAddress = synt.oracle;
+    // const synt = allOrders[sid];
+    // const bytesArray = ethers.utils.arrayify(synt.ticker);
+    const ticker = 'ETH'; //String.fromCharCode(...bytesArray);
+    // const balance = synt.balance;
 
     let price = bigNum('1');
     let priceDisplay = prixNum(forComm(forNum(price)),2);
-    let valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
+    // let valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
 
-    if (oracleAddress && ticker != 'VSDC') {
+    if (ticker == 'ETH') {
         try {   
-            price = await swapsyntContract.getPrice(oracleAddress);
+            price = await perpsyntContract.getPrice();
         }
         catch (error) {
             console.log(ticker + " price\n\n" + error);
         }
 
-        if (ticker == 'ETH') {
+        // if (ticker == 'ETH') {
             $('.price-eth').attr('alt',price);
-        }
+        // }
 
         priceDisplay = prixNum(forComm(forNum(price)),2);
-        valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
+        // valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
     }
 
     $('.price-' + ticker.toLowerCase()).attr('alt',price).html(priceDisplay);
-    $('.value-' + ticker.toLowerCase()).html(valueDisplay);
+    // $('.value-' + ticker.toLowerCase()).html(valueDisplay);
 
     if (preload) {
         preloadSid += 1;
@@ -470,10 +481,9 @@ async function updateAssets() {
     $('#balance-eth').html(prixNum(forComm(forNum(lastEthBalance)),6)).attr('value',forNum(lastEthBalance));
     $('#balance-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),6)).attr('value',forNum(lastVsdcBalance));
     $('#value-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),0));
-    $('#value-volume').html(prixNum(forComm(forNum(lastVolumeBalance)),0));
-    $('#value-xpts').html(prixNum(forComm(forNum(bigDiv(lastVolumeBalance,"1000"))),0));
+    $('.value-volume').html(prixNum(forComm(forNum(lastVolumeBalance)),0));
 
-    $('#synts-title').text('Synthetics loading...');
+    $('#synts-title').text('Orders loading...');
 
     if ($('#from-swap button').val() == 'VSDC') $('#from-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
     if ($('#to-swap button').val() == 'VSDC') $('#to-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
@@ -481,30 +491,30 @@ async function updateAssets() {
     if ($('#from-swap button').val() == 'ETH') $('#from-balance').html(prixNum(forNum(lastEthBalance))).attr('value',forNum(lastEthBalance));
     if ($('#to-swap button').val() == 'ETH') $('#to-balance').html(prixNum(forNum(lastEthBalance))).attr('value',forNum(lastEthBalance));
 
-    await updateTotalSynts();
-    await updateAllSynts()
+    // await updateTotalSynts();
+    // await updateallOrders();
 
-    if (allSynts) {
-        let index = 0;
-        let tableEmpty = $('.table-folio-synts tr').length <= 0 ? true : false;
+    // if (allOrders) {
+    //     let index = 0;
+    //     let tableEmpty = $('.table-folio-synts tr').length <= 0 ? true : false;
         
-        const tbody = $('.table-folio-synts');
+    //     const tbody = $('.table-folio-synts');
 
-        for (const synt of allSynts) {
+    //     for (const synt of allOrders) {
             let price = 0;
 
-            const bytesArray = ethers.utils.arrayify(synt.ticker);
-            const ticker = String.fromCharCode(...bytesArray);
-                  allTickers['§' + ticker] = index;
-                  allTickers[ticker] = index;
-                  index += 1;
+            // const bytesArray = ethers.utils.arrayify(synt.ticker);
+            const ticker = 'ETH'; //String.fromCharCode(...bytesArray);
+                  // allTickers['§' + ticker] = index;
+                  // allTickers[ticker] = index;
+                  // index += 1;
 
-            const balance = synt.balance;
-            const oracleAddress = synt.oracle;
+            // const balance = synt.balance;
+            // const oracleAddress = await perpsyntContract._oracle();
 
-            if (oracleAddress && ticker == 'ETH') {
+            if (ticker == 'ETH') {
                 try {   
-                    price = await swapsyntContract.getPrice(oracleAddress);
+                    price = await perpsyntContract.getPrice();
                 }
                 catch (error) {
                     console.log(ticker + " price\n\n" + error);
@@ -518,47 +528,47 @@ async function updateAssets() {
             }
 
             let tickerClass = ticker.toLowerCase();
-            let balanceDisplay = balance ? prixNum(forComm(forNum(balance)),6) : "&mdash;";
+            // let balanceDisplay = balance ? prixNum(forComm(forNum(balance)),6) : "&mdash;";
             let priceDisplay = price ? prixNum(forComm(forNum(price)),2) : "&mdash;";
-            let valueDisplay = price ? prixNum(forComm(forNum(bigMul(balance,price,true))),0) : "&mdash;";
+            // let valueDisplay = price ? prixNum(forComm(forNum(bigMul(balance,price,true))),0) : "&mdash;";
 
-            if (tableEmpty) {
-                const row = $('<tr>').attr('value', '§' + ticker);
-                const symbolCell = $('<td>').text('§' + ticker);
-                const balanceCell = $('<td>').html('<span class="balance balance-' + tickerClass + '" value="' + forNum(balance) + '">' + balanceDisplay + '</span>');
+            // if (tableEmpty) {
+                // const row = $('<tr>').attr('value', '§' + ticker);
+                // const symbolCell = $('<td>').text('§' + ticker);
+            //     const balanceCell = $('<td>').html('<span class="balance balance-' + tickerClass + '" value="' + forNum(balance) + '">' + balanceDisplay + '</span>');
 
-                const valueCell = $('<td>').html('<small>$</small><span class="value-' + tickerClass + '">' + valueDisplay + '</span>');
-                const priceCell = $('<td>').html('<small>$</small><span class="price-' + tickerClass + '" alt="' + price + '">' + priceDisplay + '</span>');
+            //     const valueCell = $('<td>').html('<small>$</small><span class="value-' + tickerClass + '">' + valueDisplay + '</span>');
+                // const priceCell = $('<td>').html('<small>$</small><span class="price-' + tickerClass + '" alt="' + price + '">' + priceDisplay + '</span>');
                                   
-                row.append(symbolCell, balanceCell, priceCell, valueCell);
-                tbody.append(row);
-            }   
+            //     row.append(symbolCell, balanceCell, priceCell, valueCell);
+            //     tbody.append(row);
+            // }   
 
-            $('.balance-' + tickerClass).attr('alt',forNum(balance)).html(balanceDisplay);
-            $('.price-' + tickerClass).attr('alt',price).html(priceDisplay);
-            $('.value-' + tickerClass).html(valueDisplay);
+            // $('.balance-' + tickerClass).attr('alt',forNum(balance)).html(balanceDisplay);
+            // $('.price-' + tickerClass).attr('alt',price).html(priceDisplay);
+            // $('.value-' + tickerClass).html(valueDisplay);
 
             if ($('#from-swap button').val() == '§' + ticker) $('#from-balance').html(prixNum(forComm(forNum(balance)))).attr('value',forNum(balance));
             if ($('#to-swap button').val() == '§' + ticker) $('#to-balance').html(prixNum(forComm(forNum(balance)))).attr('value',forNum(balance));
-        }
+        // }
 
         if (preloadPriceInterval) {
             clearInterval(preloadPriceInterval);
             preloadSid = 1;
         }
         preloadPriceInterval = setInterval(function(){ updatePrice(); }, 250);
-    }
+    // }
 
-    $('#folio tbody tr').click(onTickerSelect);
-    $('#synts-title').text('Synthetics');
-    $('#btn-connect').text('Swap');
+    // $('#folio tbody tr').click(onTickerSelect);
+    $('#synts-title').text('Orders');
+    $('#btn-long').text('Long').removeClass('btn-secondary').addClass('btn-success');
 
     updateSizePrice(getPairPrice());
     enableUI();
 }
 
 async function afterConnect() {
-    $('#btn-connect').text('Loading . . .');
+    $('#btn-long').text('Loading . . .');
 
     $('#folio-tos').hide();
     $('#folio-box').show();
@@ -606,20 +616,22 @@ async function afterConnect() {
 
     vsdcContract = new ethers.Contract(VSDCAddress, VSDCABI, signer);
     faucethContract = new ethers.Contract(FaucethAddress, FaucethABI, signer);
-    swapsyntContract = new ethers.Contract(SwapsyntAddress, SwapsyntABI, signer);
+    perpsyntContract = new ethers.Contract(PerpsyntAddress, PerpsyntABI, signer);
 
     updateAssets();
 
     $('#eth-address').text(forAdd(lastAddress)).parent().removeClass('bg-danger').addClass('bg-success');
 
-    document.querySelector("#btn-connect").removeEventListener("click", onConnect);
-    document.querySelector("#btn-connect").addEventListener("click", onSwap);
+    document.querySelector("#btn-long").removeEventListener("click", onConnect);
+    document.querySelector("#btn-long").addEventListener("click", onLong);
+    document.querySelector("#btn-short").addEventListener("click", onShort);
+
     document.querySelector("#modal-search").addEventListener('keyup', onModalSearch);
 
     $('#btn-claim').click(onClaim);
     $('#btn-display').click(displayTokens);
 
-    $('#btn-rotate').click(onTickerRotate);
+    // $('#btn-rotate').click(onTickerRotate);
     $('#from-swap input, #to-swap input').on('input',onValueChange);
     $('#from-swap button, #to-swap button').click(onTickerClick);
     $('#from-balance, #to-balance').click(onBalanceClick);
@@ -628,18 +640,20 @@ async function afterConnect() {
 async function onCheckAllowance() {
     if($('#from-swap button').val() == 'VSDC') {
         let offer = toBigNum('#from-swap input').toString();
-        let address = $('#to-swap button').val() == 'ETH' ? FaucethAddress : SwapsyntAddress;
+        let address = PerpsyntAddress;
         let allowance = await vsdcContract.allowance(lastAddress,address);
 
         if (bigLt(allowance,offer)) {
-            $('#btn-connect').text('Approve').removeClass("btn-secondary").addClass("btn-primary");
-            document.querySelector("#btn-connect").removeEventListener("click", onSwap);
-            document.querySelector("#btn-connect").addEventListener("click", onApprove);
+            $('#btn-long').text('Approve').removeClass("btn-success").addClass("btn-primary");
+            $('#btn-short').hide();
+            document.querySelector("#btn-long").removeEventListener("click", onLong);
+            document.querySelector("#btn-long").addEventListener("click", onApprove);
         }
         else {
-            $('#btn-connect').text('Swap').removeClass("btn-primary").addClass("btn-secondary");
-            document.querySelector("#btn-connect").removeEventListener("click", onApprove);
-            document.querySelector("#btn-connect").addEventListener("click", onSwap);
+            $('#btn-long').text('Long').removeClass("btn-primary").addClass("btn-success");
+            $('#btn-short').show();
+            document.querySelector("#btn-long").removeEventListener("click", onApprove);
+            document.querySelector("#btn-long").addEventListener("click", onLong);
         }
     }
 }
@@ -751,7 +765,7 @@ function onValueChangeProcess(thisParent) {
         let toValue = $('#to-swap input').val();
 
         if (parseFloat(toValue) > 0) {
-            $('#from-swap input').val( forNum(bigDiv(bigMul(bigDiv(bigMul(toBigNum('#to-swap input').toString(),pp.to),pp.from),"1004016065260000000"),"1000000000000000000")) ); // fee fix!
+            $('#from-swap input').val( forNum(bigDiv(bigMul(toBigNum('#to-swap input').toString(),pp.to),pp.from)) );
 
             if ($('#from-swap button').val() == 'VSDC') {
                 onCheckAllowance();
@@ -818,10 +832,10 @@ async function onTickerChange(event,source,pass) {
         $('#fee').text('0');
     }
     else if (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH' ) {
-        $('#fee').text('0.4');
+        $('#fee').text('0.5');
     }
     else {
-        $('#fee').text('0.4');
+        $('#fee').text('0.5');
     }
 
     lastSidFrom = allTickers[pp.fromTicker];
@@ -897,13 +911,13 @@ async function displayTokens() {
 }
 
 function beforeTransaction() {
-    $('#btn-connect').text('Waiting . . .');
+    $('#btn-long').text('Waiting . . .');
     disableUI();
 
     return false;
 }
 
-async function onSwap() {
+async function onLong() {
     let pp = getPairPrice();
 
     if (pp.fromSize == undefined || pp.toSize == undefined || 
@@ -914,38 +928,13 @@ async function onSwap() {
     let tx = beforeTransaction();
 
     try {
-        if (pp.fromTicker == 'ETH' && pp.toTicker == 'VSDC') {
-            let fromSize = toBigNum('#from-swap input', 'ether');
-            tx = await faucethContract['mint()']({ value: fromSize });
-        }
-        else if (pp.fromTicker == 'VSDC' && pp.toTicker == 'ETH') {
-            tx = await faucethContract['burn(uint256)'](pp.fromSize);
-        }
-        else if (pp.fromTicker == 'VSDC' && pp.toTicker == '§VSDC') {
-            tx = await swapsyntContract.deposit(pp.fromSize);
-        }
-        else if (pp.fromTicker == '§VSDC' && pp.toTicker == 'VSDC') {
-            tx = await swapsyntContract.withdraw(pp.fromSize);
-        }
-        else if (pp.fromTicker == 'VSDC' && pp.toTicker != '§VSDC') {
-            tx = await swapsyntContract['buyAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.toTicker,false)),pp.fromSize,false);
-        }
-        else if (pp.fromTicker != '§VSDC' && pp.toTicker == 'VSDC') {
-            tx = await swapsyntContract['sellAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.fromTicker,false)),pp.fromSize,false);
-        }
-        else if (pp.fromTicker == '§VSDC' && pp.toTicker != 'VSDC') {
-            tx = await swapsyntContract['buyAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.toTicker,false)),pp.fromSize,true);
-        }
-        else if (pp.fromTicker != 'VSDC' && pp.toTicker == '§VSDC') {
-            tx = await swapsyntContract['sellAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.fromTicker,false)),pp.fromSize,true);
-        }
-        else {
-            tx = await swapsyntContract['swapAsset(bytes32,bytes32,uint256)'](toBytes(toClass(pp.fromTicker,false)),toBytes(toClass(pp.toTicker,false)),pp.fromSize);
+        if (pp.fromTicker == 'VSDC' && pp.toTicker == 'ETH') {
+            tx = await perpsyntContract.openOrder(pp.fromSize,1,false,false);
         }
     } catch (error) {
         console.log(error);
 
-        let reason = 'Error! ' + error.reason + '. <a href="/swaps.html" class="text-muted">Refresh page</a>';
+        let reason = 'Error! ' + error.reason + '. <a href="/perps.html" class="text-muted">Refresh page</a>';
         $('#alert-error').html(reason);
     }
 
@@ -954,11 +943,16 @@ async function onSwap() {
     return false;
 }
 
+async function onShort() {
+
+    return false;
+}
+
 async function onApprove() {
     let pp = getPairPrice();
     let tx = beforeTransaction();
 
-    let contractAddress = (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH') ? FaucethAddress : SwapsyntAddress;
+    let contractAddress = PerpsyntAddress;
 
     try {
         tx = await vsdcContract.approve(contractAddress, toBigNum('#swapApproval'));
@@ -979,7 +973,7 @@ async function onClaim(event) {
 
     try {
         tx = await faucethContract.claimVolume(); onClaimTransaction(tx);
-        tx = await swapsyntContract.claimVolume(); onClaimTransaction(tx);
+        tx = await perpsyntContract.claimVolume(); onClaimTransaction(tx);
     }
     catch (error) {
         console.log("onClaim\n\n" + error);
@@ -995,8 +989,7 @@ async function onClaimTransaction(tx) {
                 updateVolumeBalance();
 
                 setTimeout(function() {
-                    $('#value-volume').html(prixNum(forComm(forNum(lastVolumeBalance)),0));
-                    $('#value-xpts').html(prixNum(forComm(forNum(bigDiv(lastVolumeBalance,"1000"))),0));
+                    $('.value-volume').html(prixNum(forComm(forNum(lastVolumeBalance)),0));
                 }, 3000)
             }
         });
@@ -1005,24 +998,25 @@ async function onClaimTransaction(tx) {
 
 async function onTransaction(tx) {
     if (tx) {
-        $('#btn-connect').text('Confirming . . .');
+        $('#btn-long').text('Confirming . . .');
 
         await tx.wait().then(function(result) {
             enableUI();
 
             if (result.status) {
                 updateAssets();
-                $('#btn-connect').text('Confirmed !');
+                $('#btn-long').text('Confirmed !');
             }
             else {
-                $('#btn-connect').text('Failure !');
+                $('#btn-long').text('Failure !');
             }
 
             setTimeout(function() {
-                document.querySelector("#btn-connect").removeEventListener("click", onApprove);
-                document.querySelector("#btn-connect").addEventListener("click", onSwap);
+                document.querySelector("#btn-long").removeEventListener("click", onApprove);
+                document.querySelector("#btn-long").addEventListener("click", onLong);
 
-                $('#btn-connect').text('Swap').removeClass("btn-success").removeClass("btn-primary").addClass("btn-secondary");
+                $('#btn-long').addClass("btn-success").removeClass("btn-primary").removeClass("btn-secondary").text('Long');
+                $('#btn-short').show();
             }, 3000)
         });
     }
@@ -1035,7 +1029,7 @@ window.addEventListener('load', async () => {
     $('#version').text(version);
 
     $.getScript('static/structs-' + CID + '-' + variant + '.js?ver=' + version, function() {
-        document.querySelector("#btn-connect").addEventListener("click", onConnect);
+        document.querySelector("#btn-long").addEventListener("click", onConnect);
         onConnect();
     });
 });
@@ -1122,11 +1116,13 @@ function forAdd(val) {
 }
 
 function enableUI() {
-    $('#from-balance, #from-swap input, #from-swap button, #to-balance, #to-swap input, #to-swap button, #btn-rotate, #btn-connect').removeAttr('disabled');
+    $('#from-balance, #to-balance, #from-swap input, #to-swap input, #btn-long').removeAttr('disabled');
+    $('#btn-short').show();
 }
 
 function disableUI() {
-    $('#from-balance, #from-swap input, #from-swap button, #to-balance, #to-swap input, #to-swap button, #btn-rotate, #btn-connect').attr('disabled', true);
+    $('#from-balance, #to-balance, #from-swap input, #to-swap input, #btn-long').attr('disabled', true);
+    $('btn-short').hide();
 }
 
     </script>

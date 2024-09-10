@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Synthetic Decentralized Exchange Secured by VSDC and Chainlink.">
 
-    <title>Payship.org SWAPS</title>
+    <title>Payship.org FARMS</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
@@ -21,6 +21,7 @@
         }
 
         #from-balance,
+        #farm-balance,
         #to-balance,
         table tr {
             cursor: pointer;
@@ -42,6 +43,10 @@
 
         a.text-muted {
             text-decoration: underline;
+        }
+
+        .btn-hidden {
+            display: none;
         }
 
         .btn-secondary {
@@ -87,6 +92,7 @@
         }
 
         #from-balance *,
+        #farm-balance *,
         #to-balance * {
             font-size: 0.66rem !important;
             font-weight: normal !important;
@@ -107,7 +113,7 @@
     <!-- Navigation -->
     <nav id="header" class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/"><span class="symbol">(-§-)</span> PAYSHIP<sub>/SWAPS <small id="version">v-.-.-</small></sub></a>
+            <a class="navbar-brand" href="/"><span class="symbol">(+)</span> PAYSHIP<sub>/FARMS <small id="version">v-.-.-</small></sub></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -128,39 +134,28 @@
             <div id="container-vsync" class="row align-items-top">
                 <div class="col-lg-6">
                     <div class="pt-5 pb-5">
-                        <h6 class="text-center">SWAP SYNTHETIC ASSETS</h6>
+                        <h6 class="text-center">DEPOSIT OR WITHDRAW</h6>
                         <hr />
                         <form class="shadow-lg p-3 mb-5 bg-white rounded">
                             <input id="swapApproval" type="hidden" value="1000000000000000000">
                             <small class="form-text text-white text-left font-mono badge bg-danger"><span id="eth-address">NO WALLET CONNECTED</span></small>
-                            <small class="form-text text-muted text-right font-mono"><span id="from-balance" alt="from-swap">&mdash;</span></small>
+                            <small class="form-text text-muted text-right font-mono">
+                                Wallet: <span id="from-balance" alt="from-swap">&mdash;</span>
+                                <br />
+                                Farm: <span id="farm-balance" alt="from-swap">&mdash;</span>
+                            </small>
                             <div id="from-swap" class="input-group mt-1 mb-1">
                                 <input type="decimal" class="form-control form-control-lg" placeholder="0.0" aria-label="Amount" disabled>
-                                <button alt="from-swap" type="button" value="ETH" class="form-control custom-select custom-select-lg" aria-label="Swap From Token" data-toggle="modal" data-target="#folio-modal" disabled>ETH</button>
+                                <button alt="from-swap" type="button" value="VSDC" class="form-control custom-select custom-select-lg" aria-label="Swap From Token" data-toggle="modal" data-target="#folio-modal" disabled>VSDC</button>
                             </div>
                             <div class="text-center">
-                                <button id="btn-rotate" type="button" class="btn btn-lg btn-light pt-0 pb-0 rounded-pill" disabled><b>&#8675;</b></button>
+                                <button id="btn-deposit" type="button" class="btn btn-lg btn-secondary rounded-pill mt-3 mb-3">Connect Wallet</button>
+                                &nbsp;
+                                <button id="btn-withdraw" type="button" class="btn btn-lg btn-danger btn-hidden rounded-pill mt-3 mb-3">Withdraw</button>
                             </div>
-                            <div id="to-swap" class="input-group mt-1">
-                                <input type="decimal" class="form-control form-control-lg" placeholder="0.0" aria-label="Amount" disabled>
-                                <button alt="to-swap" type="button" value="VSDC" class="form-control custom-select custom-select-lg" aria-label="Swap To Token" data-toggle="modal" data-target="#folio-modal" disabled>VSDC</button>
-                            </div>
-                            <small class="form-text text-muted text-right font-mono"><span id="to-balance" alt="to-swap">&mdash;</span></small>
-                            <hr />
-                            <small class="form-text text-muted float-right mt-0">
-                                <span id="to-size">1</span> <span id="to-ticker">VSDC</span> = <span id="from-size">&mdash;</span> <span id="from-ticker">ETH</span>
+                            <small class="form-text text-muted float-right mt-0 btn-hidden">
+                                <span id="to-size">1</span> <span id="to-ticker">VSDC</span> = <span id="from-size">&mdash;</span> <span id="from-ticker">VSDC</span>
                             </small>
-                            <small class="form-text text-muted">
-                                Slippage: 0%
-                                <br />
-                                Fee: &ndash;<span id="fee">0.4</span>%
-                                <br />
-                                XP: +0.1%
-                            </small>
-                            <div class="text-center">
-                                <button id="btn-connect" type="button" class="btn btn-lg btn-secondary rounded-pill mt-3 mb-3">Connect Wallet</button>
-                            </div>
-
                             <div class="text-danger text-center"><span id="alert-error"></span></div>
                         </form>
                     </div>
@@ -190,7 +185,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody id="folio-eth">
+                                <!--<tbody id="folio-eth">
                                     <tr value="ETH">
                                         <td>ETH</td>
 
@@ -198,7 +193,7 @@
                                         <td><small>$</small><span class="price-eth">&mdash;</span></td>
                                         <td><small>$</small><span id="value-eth">&mdash;</span></td>
                                     </tr>
-                                </tbody>
+                                </tbody>-->
 
                                 <tbody id="folio-vsdc">
                                     <tr value="VSDC">
@@ -209,20 +204,49 @@
                                         <td><small>$</small><span id="value-vsdc">&mdash;</span></td>
                                     </tr>
                                 </tbody>
+
+                                <!--<tbody id="folio-vpts-vsdc">
+                                    <tr value="XPSHP-VSDC">
+                                        <td>XPSHP+VSDC</td>
+
+                                        <td><span id="balance-vpts" class="balance">&mdash;</span></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>-->
+
                                 <thead id="tips">
                                     <tr>
                                         <td colspan="4" class="text-center">
-                                            <small class="text-muted text-info">Swap ETH to VSDC to start trading. Wrap VSDC into §VSDC to swap faster with lower gas.</small>
+                                            <small class="text-muted text-info"><a href="#">Get VSDC</a><!-- or <a href="#">Pool XPSHP+VSDC</a>-->. Deposit assets to start farming XP.</small>
                                         </td>
                                     </tr>
                                 </thead>
                                 
                                 <thead>
                                         <tr>
-                                            <th colspan="4" class="td-bald"><br /><small id="synts-title">Synthetics</small></th>
+                                            <th class="td-bald"><br /><small id="synts-title">Farms</small></th>
+                                            <th class="td-bald"><br /><small>Balance</small></th>
+                                            <th class="td-bald"><br /><small></small></th>
+                                            <th class="td-bald"><br /><small>APR</small></th>
                                         </tr>
                                 </thead>
-                                <tbody id="folio-synts" class="table-folio-synts"></tbody>
+                                <tbody id="folio-farms" class="table-folio-farms">
+                                    <tr value="VSDC">
+                                        <td>§VSDC</td>
+
+                                        <td><span id="farm-balance-vsdc" class="balance">&mdash;</span></td>
+                                        <td></td>
+                                        <td>100%</td>
+                                    </tr>
+                                    <!--<tr value="farm-vpts-vsdc">
+                                        <td>§XPSHP+VSDC</td>
+
+                                        <td><span id="farm-balance-vpts-eth" class="balance">&mdash;</span></td>
+                                        <td></td>
+                                        <td>100%</td>
+                                    </tr>-->
+                                </tbody>
                             </table>
                         </div>
 
@@ -233,13 +257,13 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                Volume: $<span id="value-volume">&mdash;</span><br />
+                                Farm Value: $<span id="value-farm">&mdash;</span><br />
                                 <small class="text-info text-muted">
-                                    Your tx volume farms XP.
+                                    Your deposits farm XP at 100% APR.
                                 </small>
                             </div>
                             <div class="col-sm-6 text-right">
-                                Unclaimed: <span id="value-xpts">&mdash;</span> XPSHP<br />
+                                Unclaimed: <span id="value-points">&mdash;</span> XPSHP<br />
                                 <a href="#" id="btn-claim"><b>CLAIM NOW</b></a>
                             </div>
                         </div>
@@ -267,7 +291,7 @@
                 <br />
                 <h6 class="mb-0 text-muted">Synthetic Decentralized Exchange Secured by VSDC &amp; Chainlink</h6>
                 <br />
-                <h1 class="mt-0 mb-2"><span class="symbol">(-§-)</span> PAYSHIP/<sub>SWAPS</sub></h1>
+                <h1 class="mt-0 mb-2"><span class="symbol">(+)</span> PAYSHIP/<sub>FARMS</sub></h1>
                 <br />
                 <h5 class="mt-2">Play with DeFi&mdash;Forget slippage, bots &amp; mev. Get low fees &amp; low gas.</h5>
                 <br />
@@ -312,32 +336,31 @@ let provider;
 let network;
 let signer;
 
-let allSynts;
+let allFarms;
 let allTickers = [];
 
 let lastAddress;
-let lastEthPrice;
-let lastEthBalance;
 let lastVsdcBalance;
-let lastVolumeBalance;
+let lastFarmBalance;
+let lastPointsBalance;
 
 let preloadPriceInterval;
 let livePriceInterval;
 
-let lastSwapButton = 'to-swap';
-let lastSwapFrom = 'ETH';
-let lastSwapTo = 'VSDC';
+let lastSubmitButton = 'btn-deposit';
+let lastSwapButton = 'from-swap';
+let lastSwapFrom = 'VSDC';
+let lastSwapTo = 'ETH';
 let modalOpen = false;
 
-let totalSynts = 0;
+let totalFarms = 0;
 let preloadSid = 1;
 
 let lastSidFrom = 0;
 let lastSidTo = 0;
 
 let vsdcContract;
-let faucethContract;
-let swapsyntContract;
+let farmlendContract;
 
 
 async function onConnect() {
@@ -359,16 +382,6 @@ async function onConnect() {
     return false;
 }
 
-async function updateEthBalance() {
-    try {
-        lastEthBalance = await signer.getBalance();
-    }
-    catch (error) {
-        lastEthBalance = 0;
-        console.log("lastEthBalance\n\n" + error);
-    }
-}
-
 async function updateVsdcBalance() {
     try {
         lastVsdcBalance = await vsdcContract.balanceOf(lastAddress);
@@ -379,186 +392,65 @@ async function updateVsdcBalance() {
     }
 }
 
-async function updateVolumeBalance() {
+async function updateFarmBalance() {
     try {
-        lastVolumeBalance = bigAdd(
-            await faucethContract.getVolume(lastAddress),
-            await swapsyntContract.getVolume(lastAddress)
-        );
+        lastFarmBalance = await farmlendContract.userInfo(0,lastAddress);
+        lastFarmBalance = lastFarmBalance.amount;
     }
     catch (error) {
-        lastVolumeBalance = 0;
-        console.log("lastVolumeBalance\n\n" + error);
+        lastVsdcBalance = 0;
+        console.log("lastVsdcBalance\n\n" + error);
     }
 }
 
-async function updateTotalSynts() {
-    if (totalSynts == 0) {
+async function updatePointsBalance() {
+    try {
+        lastPointsBalance = await farmlendContract.pendingPoints(0,lastAddress);
+    }
+    catch (error) {
+        lastPointsBalance = 0;
+        console.log("lastPointsBalance\n\n" + error);
+    }
+}
+
+async function updateTotalFarms() {
+    if (totalFarms == 0) {
         try {
-            totalSynts = await swapsyntContract._sid();
+            totalFarms = await farmlendContract.poolLength();
         }
         catch (error) {
-            console.log("totalSynts\n\n" + error);
+            console.log("totalFarms\n\n" + error);
         }
-    }
-}
-
-async function updateAllSynts() {
-    try {
-        allSynts = await swapsyntContract.getFolio();
-    }
-    catch (error) {
-        allSynts = undefined;
-        console.log(SwapsyntAddress + " allSynts\n\n" + error);
-    }
-}
-
-async function updatePrice(sid) {
-    let preload = false;
-    if (sid == undefined) {
-        sid = preloadSid;
-        preload = true;
-    }
-
-    const synt = allSynts[sid];
-    const bytesArray = ethers.utils.arrayify(synt.ticker);
-    const ticker = String.fromCharCode(...bytesArray);
-    const balance = synt.balance;
-    const oracleAddress = synt.oracle;
-
-    let price = bigNum('1');
-    let priceDisplay = prixNum(forComm(forNum(price)),2);
-    let valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
-
-    if (oracleAddress && ticker != 'VSDC') {
-        try {   
-            price = await swapsyntContract.getPrice(oracleAddress);
-        }
-        catch (error) {
-            console.log(ticker + " price\n\n" + error);
-        }
-
-        if (ticker == 'ETH') {
-            $('.price-eth').attr('alt',price);
-        }
-
-        priceDisplay = prixNum(forComm(forNum(price)),2);
-        valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
-    }
-
-    $('.price-' + ticker.toLowerCase()).attr('alt',price).html(priceDisplay);
-    $('.value-' + ticker.toLowerCase()).html(valueDisplay);
-
-    if (preload) {
-        preloadSid += 1;
-        
-        if (preloadSid >= totalSynts) {
-            clearInterval(preloadPriceInterval);
-            preloadSid = 1;
-        }
-    }
-    else {
-        updateSizePrice(getPairPrice());
     }
 }
 
 async function updateAssets() {
-    await updateEthBalance();
     await updateVsdcBalance();
-    await updateVolumeBalance();
+    await updateFarmBalance();
+    await updatePointsBalance()
 
-    $('#balance-eth').html(prixNum(forComm(forNum(lastEthBalance)),6)).attr('value',forNum(lastEthBalance));
     $('#balance-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),6)).attr('value',forNum(lastVsdcBalance));
+    $('#farm-balance-vsdc').html(prixNum(forComm(forNum(lastFarmBalance)),6)).attr('value',forNum(lastFarmBalance));
+
+    $('#value-farm').html(prixNum(forComm(forNum(lastFarmBalance)),0)).attr('value',forNum(lastFarmBalance));
     $('#value-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),0));
-    $('#value-volume').html(prixNum(forComm(forNum(lastVolumeBalance)),0));
-    $('#value-xpts').html(prixNum(forComm(forNum(bigDiv(lastVolumeBalance,"1000"))),0));
+    $('#value-points').html(prixNum(forComm(forNum(lastPointsBalance)),4));
+    $('#synts-title').text('Farms loading...');
 
-    $('#synts-title').text('Synthetics loading...');
-
-    if ($('#from-swap button').val() == 'VSDC') $('#from-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
-    if ($('#to-swap button').val() == 'VSDC') $('#to-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
-
-    if ($('#from-swap button').val() == 'ETH') $('#from-balance').html(prixNum(forNum(lastEthBalance))).attr('value',forNum(lastEthBalance));
-    if ($('#to-swap button').val() == 'ETH') $('#to-balance').html(prixNum(forNum(lastEthBalance))).attr('value',forNum(lastEthBalance));
-
-    await updateTotalSynts();
-    await updateAllSynts()
-
-    if (allSynts) {
-        let index = 0;
-        let tableEmpty = $('.table-folio-synts tr').length <= 0 ? true : false;
-        
-        const tbody = $('.table-folio-synts');
-
-        for (const synt of allSynts) {
-            let price = 0;
-
-            const bytesArray = ethers.utils.arrayify(synt.ticker);
-            const ticker = String.fromCharCode(...bytesArray);
-                  allTickers['§' + ticker] = index;
-                  allTickers[ticker] = index;
-                  index += 1;
-
-            const balance = synt.balance;
-            const oracleAddress = synt.oracle;
-
-            if (oracleAddress && ticker == 'ETH') {
-                try {   
-                    price = await swapsyntContract.getPrice(oracleAddress);
-                }
-                catch (error) {
-                    console.log(ticker + " price\n\n" + error);
-                }
-
-                $('#value-eth').html(prixNum(forComm(forNum(bigMul(lastEthBalance,price,true))),0));
-                $('.price-eth').attr('alt',price);
-            }
-            else if (ticker == 'VSDC') {
-                price = bigNum('1');
-            }
-
-            let tickerClass = ticker.toLowerCase();
-            let balanceDisplay = balance ? prixNum(forComm(forNum(balance)),6) : "&mdash;";
-            let priceDisplay = price ? prixNum(forComm(forNum(price)),2) : "&mdash;";
-            let valueDisplay = price ? prixNum(forComm(forNum(bigMul(balance,price,true))),0) : "&mdash;";
-
-            if (tableEmpty) {
-                const row = $('<tr>').attr('value', '§' + ticker);
-                const symbolCell = $('<td>').text('§' + ticker);
-                const balanceCell = $('<td>').html('<span class="balance balance-' + tickerClass + '" value="' + forNum(balance) + '">' + balanceDisplay + '</span>');
-
-                const valueCell = $('<td>').html('<small>$</small><span class="value-' + tickerClass + '">' + valueDisplay + '</span>');
-                const priceCell = $('<td>').html('<small>$</small><span class="price-' + tickerClass + '" alt="' + price + '">' + priceDisplay + '</span>');
-                                  
-                row.append(symbolCell, balanceCell, priceCell, valueCell);
-                tbody.append(row);
-            }   
-
-            $('.balance-' + tickerClass).attr('alt',forNum(balance)).html(balanceDisplay);
-            $('.price-' + tickerClass).attr('alt',price).html(priceDisplay);
-            $('.value-' + tickerClass).html(valueDisplay);
-
-            if ($('#from-swap button').val() == '§' + ticker) $('#from-balance').html(prixNum(forComm(forNum(balance)))).attr('value',forNum(balance));
-            if ($('#to-swap button').val() == '§' + ticker) $('#to-balance').html(prixNum(forComm(forNum(balance)))).attr('value',forNum(balance));
-        }
-
-        if (preloadPriceInterval) {
-            clearInterval(preloadPriceInterval);
-            preloadSid = 1;
-        }
-        preloadPriceInterval = setInterval(function(){ updatePrice(); }, 250);
+    if ($('#from-swap button').val() == 'VSDC') {
+        $('#from-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
+        $('#farm-balance').html(prixNum(forNum(lastFarmBalance))).attr('value',forNum(lastFarmBalance));
     }
 
     $('#folio tbody tr').click(onTickerSelect);
-    $('#synts-title').text('Synthetics');
-    $('#btn-connect').text('Swap');
+    $('#synts-title').text('Farms');
+    $('#btn-deposit').text('Deposit').removeClass('btn-secondary').addClass('btn-success');
 
-    updateSizePrice(getPairPrice());
     enableUI();
 }
 
 async function afterConnect() {
-    $('#btn-connect').text('Loading . . .');
+    $('#btn-deposit').text('Loading . . .');
 
     $('#folio-tos').hide();
     $('#folio-box').show();
@@ -605,48 +497,50 @@ async function afterConnect() {
     signer = provider.getSigner();
 
     vsdcContract = new ethers.Contract(VSDCAddress, VSDCABI, signer);
-    faucethContract = new ethers.Contract(FaucethAddress, FaucethABI, signer);
-    swapsyntContract = new ethers.Contract(SwapsyntAddress, SwapsyntABI, signer);
+    farmlendContract = new ethers.Contract(FarmlendAddress, FarmlendABI, signer);
 
     updateAssets();
 
     $('#eth-address').text(forAdd(lastAddress)).parent().removeClass('bg-danger').addClass('bg-success');
 
-    document.querySelector("#btn-connect").removeEventListener("click", onConnect);
-    document.querySelector("#btn-connect").addEventListener("click", onSwap);
+    document.querySelector("#btn-deposit").removeEventListener("click", onConnect);
+    document.querySelector("#btn-deposit").addEventListener("click", onDeposit);
+    document.querySelector("#btn-withdraw").addEventListener("click", onWithdraw);
+
     document.querySelector("#modal-search").addEventListener('keyup', onModalSearch);
 
     $('#btn-claim').click(onClaim);
     $('#btn-display').click(displayTokens);
 
-    $('#btn-rotate').click(onTickerRotate);
-    $('#from-swap input, #to-swap input').on('input',onValueChange);
-    $('#from-swap button, #to-swap button').click(onTickerClick);
-    $('#from-balance, #to-balance').click(onBalanceClick);
+    $('#from-swap input').on('input',onValueChange);
+    $('#from-swap button').click(onTickerClick);
+    $('#from-balance, #farm-balance, #to-balance').click(onBalanceClick);
 }
 
 async function onCheckAllowance() {
     if($('#from-swap button').val() == 'VSDC') {
         let offer = toBigNum('#from-swap input').toString();
-        let address = $('#to-swap button').val() == 'ETH' ? FaucethAddress : SwapsyntAddress;
+        let address = FarmlendAddress;
         let allowance = await vsdcContract.allowance(lastAddress,address);
 
         if (bigLt(allowance,offer)) {
-            $('#btn-connect').text('Approve').removeClass("btn-secondary").addClass("btn-primary");
-            document.querySelector("#btn-connect").removeEventListener("click", onSwap);
-            document.querySelector("#btn-connect").addEventListener("click", onApprove);
+            $('#btn-deposit').text('Approve').removeClass("btn-success").addClass("btn-primary");
+            $('#btn-withdraw').hide();
+            document.querySelector("#btn-deposit").removeEventListener("click", onDeposit);
+            document.querySelector("#btn-deposit").addEventListener("click", onApprove);
         }
         else {
-            $('#btn-connect').text('Swap').removeClass("btn-primary").addClass("btn-secondary");
-            document.querySelector("#btn-connect").removeEventListener("click", onApprove);
-            document.querySelector("#btn-connect").addEventListener("click", onSwap);
+            $('#btn-deposit').text('Deposit').removeClass("btn-primary").addClass("btn-success");
+            $('#btn-withdraw').show();
+            document.querySelector("#btn-deposit").removeEventListener("click", onApprove);
+            document.querySelector("#btn-deposit").addEventListener("click", onDeposit);
         }
     }
 }
 
 function onBalanceClick() {
     let source = '#' + $(this).attr('id');
-    let target = source == '#from-balance' ? '#from-swap' : '#to-swap';
+    let target = '#from-swap';
 
     $(target + ' input').val($(source).attr('value'));
     onValueChangeProcess($(target));
@@ -668,19 +562,17 @@ async function onTickerSelect(event,source,pass = 0) {
     const origin = source ? source : this;
     const ticker = $(origin).attr('value');
 
-    if(ticker == 'ETH' && modalOpen == false) {
-        lastSwapButton = 'from-swap';
-    }
-
-    let lastSpanBalance = lastSwapButton == 'from-swap' ? 'from-balance' : 'to-balance';
-    let balance = $(origin).find('.balance').attr('value');
+    let balanceWallet = $('#balance-' + ticker.toLowerCase()).attr('value');
+    let balanceFarm = $('#farm-balance-' + ticker.toLowerCase()).attr('value');
     
-    $('#' + lastSpanBalance).html(prixNum(balance)).attr('value',balance);
+    $('#from-balance').html(prixNum(balanceWallet)).attr('value',balanceWallet);
+    $('#farm-balance').html(prixNum(balanceFarm)).attr('value',balanceFarm);
+
     $('#' + lastSwapButton + ' button').text(ticker).val(ticker);
     $('#folio-modal').modal('hide');
     modalOpen = false;
 
-    lastSwapButton = 'to-swap';
+    lastSwapButton = 'from-swap';
     onTickerChange(event,origin,pass);
 }
 
@@ -738,27 +630,9 @@ function onValueChangeProcess(thisParent) {
         let fromValue = $('#from-swap input').val();
 
         if (parseFloat(fromValue) > 0) {
-            $('#to-swap input').val( forNum(bigDiv(bigMul(toBigNum('#from-swap input').toString(),pp.from),pp.to)) );
             if ($('#from-swap button').val() == 'VSDC') {
                 onCheckAllowance();
             }
-        }
-        else {
-            $('#to-swap input').val('');
-        }
-    }
-    if (thisParent.attr('id') == 'to-swap') {
-        let toValue = $('#to-swap input').val();
-
-        if (parseFloat(toValue) > 0) {
-            $('#from-swap input').val( forNum(bigDiv(bigMul(bigDiv(bigMul(toBigNum('#to-swap input').toString(),pp.to),pp.from),"1004016065260000000"),"1000000000000000000")) ); // fee fix!
-
-            if ($('#from-swap button').val() == 'VSDC') {
-                onCheckAllowance();
-            }
-        }
-        else {
-            $('#from-swap input').val('');
         }
     }
 
@@ -770,93 +644,93 @@ async function updateSizePrice(pp) {
 }
 
 async function onTickerChange(event,source,pass) {
-    if (pass == 0) {
-        pass += 1;
+    // if (pass == 0) {
+    //     pass += 1;
 
-        if ($(source).attr('value') == 'ETH') {
-            if ($('#from-swap button').text() == 'ETH') {
-                onTickerSelect(event,$('#folio-vsdc tr'),pass);
-                return false;
-            }
+    //     if ($(source).attr('value') == 'ETH') {
+    //         if ($('#from-swap button').text() == 'ETH') {
+    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
+    //             return false;
+    //         }
 
-            if ($('#to-swap button').text() == 'ETH') {
-                lastSwapButton = 'from-swap';
-                onTickerSelect(event,$('#folio-vsdc tr'),pass);
-                return false;
-            }
-        }
-        else if ($(source).attr('value') != 'VSDC') {
-            if ($('#from-swap button').text() == 'ETH') {
-                lastSwapButton = 'from-swap';
-                onTickerSelect(event,$('#folio-vsdc tr'),pass);
-                return false;
-            }
+    //         if ($('#to-swap button').text() == 'ETH') {
+    //             lastSwapButton = 'from-swap';
+    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
+    //             return false;
+    //         }
+    //     }
+    //     else if ($(source).attr('value') != 'VSDC') {
+    //         if ($('#from-swap button').text() == 'ETH') {
+    //             lastSwapButton = 'from-swap';
+    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
+    //             return false;
+    //         }
 
-            if ($('#to-swap button').text() == 'ETH') {
-                lastSwapButton = 'to-swap';
-                onTickerSelect(event,$('#folio-vsdc tr'),pass);
-                return false;
-            }
-        }
-    }
+    //         if ($('#to-swap button').text() == 'ETH') {
+    //             lastSwapButton = 'to-swap';
+    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
+    //             return false;
+    //         }
+    //     }
+    // }
 
-    $('#from-ticker').text( $('#from-swap button').text() );
-    $('#to-ticker').text( $('#to-swap button').text() );
+    // $('#from-ticker').text( $('#from-swap button').text() );
+    // $('#to-ticker').text( $('#to-swap button').text() );
 
-    let pp = getPairPrice();
-             updateSizePrice(pp);
+    // let pp = getPairPrice();
+    //          updateSizePrice(pp);
 
-    if (lastSwapButton == 'from-swap') {
-        onValueChangeProcess($('#to-swap'));
-    }
-    else {
-        onValueChangeProcess($('#from-swap'));
-    }
+    // if (lastSwapButton == 'from-swap') {
+    //     // onValueChangeProcess($('#to-swap'));
+    // }
+    // else {
+    //     onValueChangeProcess($('#from-swap'));
+    // }
 
-    if ((pp.fromTicker == 'VSDC' && pp.toTicker == '§VSDC') ||
-        (pp.fromTicker == '§VSDC' && pp.toTicker == 'VSDC') ) {
-        $('#fee').text('0');
-    }
-    else if (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH' ) {
-        $('#fee').text('0.4');
-    }
-    else {
-        $('#fee').text('0.4');
-    }
+    // if ((pp.fromTicker == 'VSDC' && pp.toTicker == '§VSDC') ||
+    //     (pp.fromTicker == '§VSDC' && pp.toTicker == 'VSDC') ) {
+    //     $('#fee').text('0');
+    // }
+    // else if (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH' ) {
+    //     $('#fee').text('0.5');
+    // }
+    // else {
+    //     $('#fee').text('0.5');
+    // }
 
-    lastSidFrom = allTickers[pp.fromTicker];
-    lastSidTo = allTickers[pp.toTicker];
+    // lastSidFrom = allTickers[pp.fromTicker];
+    // lastSidTo = allTickers[pp.toTicker];
 
-    updatePrice(lastSidFrom);
-    updatePrice(lastSidTo);
+    // updatePrice(lastSidFrom);
+    // updatePrice(lastSidTo);
 
-    if (livePriceInterval) clearInterval(livePriceInterval);
-    livePriceInterval = setInterval(function () { updatePrice(lastSidFrom); updatePrice(lastSidTo); }, 15000);
+    // if (livePriceInterval) clearInterval(livePriceInterval);
+    // livePriceInterval = setInterval(function () { updatePrice(lastSidFrom); updatePrice(lastSidTo); }, 15000);
 
     return false;
 }
 
 function getPairPrice() {
     let fromTicker = $('#from-ticker').text();
-    let toTicker = $('#to-ticker').text();
+    // let toTicker = $('#to-ticker').text();
 
     let fromTickerClass = toClass(fromTicker);
-    let toTickerClass = toClass(toTicker);
+    // let toTickerClass = toClass(toTicker);
 
     let fromSize = toBigNum('#from-swap input');
-    let toSize = toBigNum('#to-swap input');
+    // let toSize = toBigNum('#to-swap input');
 
     let fromPrice = $('.price-' + fromTickerClass).attr('alt');
-    let toPrice = $('.price-' + toTickerClass).attr('alt');
+    // let toPrice = $('.price-' + toTickerClass).attr('alt');
     
     return { 
             fromTicker: fromTicker,
             fromSize: fromSize,
             from: fromPrice, 
 
-            toTicker: toTicker,
-            toSize: toSize,
-            to: toPrice
+            // toTicker: toTicker,
+            // toSize: toSize,
+            // to: toPrice
         };
 }
 
@@ -897,55 +771,56 @@ async function displayTokens() {
 }
 
 function beforeTransaction() {
-    $('#btn-connect').text('Waiting . . .');
+    $('#' + lastSubmitButton).text('Waiting . . .');
     disableUI();
 
     return false;
 }
 
-async function onSwap() {
+async function onDeposit() {
+    lastSubmitButton = 'btn-deposit';
     let pp = getPairPrice();
 
-    if (pp.fromSize == undefined || pp.toSize == undefined || 
-        pp.fromSize == null || pp.toSize == null ||
-        pp.fromSize == 0 || pp.toSize == 0 ||
-        pp.fromTicker == pp.toTicker) return false;
+    if (pp.fromSize == undefined|| 
+        pp.fromSize == null ||
+        pp.fromSize == 0) return false;
 
     let tx = beforeTransaction();
 
     try {
-        if (pp.fromTicker == 'ETH' && pp.toTicker == 'VSDC') {
-            let fromSize = toBigNum('#from-swap input', 'ether');
-            tx = await faucethContract['mint()']({ value: fromSize });
-        }
-        else if (pp.fromTicker == 'VSDC' && pp.toTicker == 'ETH') {
-            tx = await faucethContract['burn(uint256)'](pp.fromSize);
-        }
-        else if (pp.fromTicker == 'VSDC' && pp.toTicker == '§VSDC') {
-            tx = await swapsyntContract.deposit(pp.fromSize);
-        }
-        else if (pp.fromTicker == '§VSDC' && pp.toTicker == 'VSDC') {
-            tx = await swapsyntContract.withdraw(pp.fromSize);
-        }
-        else if (pp.fromTicker == 'VSDC' && pp.toTicker != '§VSDC') {
-            tx = await swapsyntContract['buyAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.toTicker,false)),pp.fromSize,false);
-        }
-        else if (pp.fromTicker != '§VSDC' && pp.toTicker == 'VSDC') {
-            tx = await swapsyntContract['sellAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.fromTicker,false)),pp.fromSize,false);
-        }
-        else if (pp.fromTicker == '§VSDC' && pp.toTicker != 'VSDC') {
-            tx = await swapsyntContract['buyAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.toTicker,false)),pp.fromSize,true);
-        }
-        else if (pp.fromTicker != 'VSDC' && pp.toTicker == '§VSDC') {
-            tx = await swapsyntContract['sellAsset(bytes32,uint256,bool)'](toBytes(toClass(pp.fromTicker,false)),pp.fromSize,true);
-        }
-        else {
-            tx = await swapsyntContract['swapAsset(bytes32,bytes32,uint256)'](toBytes(toClass(pp.fromTicker,false)),toBytes(toClass(pp.toTicker,false)),pp.fromSize);
+        if (pp.fromTicker == 'VSDC') {
+            tx = await farmlendContract.deposit(0,pp.fromSize);
         }
     } catch (error) {
         console.log(error);
 
-        let reason = 'Error! ' + error.reason + '. <a href="/swaps.html" class="text-muted">Refresh page</a>';
+        let reason = 'Error! ' + error.reason + '. <a href="/farms.html" class="text-muted">Refresh page</a>';
+        $('#alert-error').html(reason);
+    }
+
+    onTransaction(tx);
+
+    return false;
+}
+
+async function onWithdraw() {
+    lastSubmitButton = 'btn-withdraw';
+    let pp = getPairPrice();
+
+    if (pp.fromSize == undefined|| 
+        pp.fromSize == null ||
+        pp.fromSize == 0) return false;
+
+    let tx = beforeTransaction();
+
+    try {
+        if (pp.fromTicker == 'VSDC') {
+            tx = await farmlendContract.withdraw(0,pp.fromSize);
+        }
+    } catch (error) {
+        console.log(error);
+
+        let reason = 'Error! ' + error.reason + '. <a href="/farms.html" class="text-muted">Refresh page</a>';
         $('#alert-error').html(reason);
     }
 
@@ -955,10 +830,11 @@ async function onSwap() {
 }
 
 async function onApprove() {
+    lastSubmitButton = 'btn-deposit';
     let pp = getPairPrice();
     let tx = beforeTransaction();
 
-    let contractAddress = (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH') ? FaucethAddress : SwapsyntAddress;
+    let contractAddress = FarmlendAddress;
 
     try {
         tx = await vsdcContract.approve(contractAddress, toBigNum('#swapApproval'));
@@ -978,8 +854,7 @@ async function onClaim(event) {
     event.preventDefault();
 
     try {
-        tx = await faucethContract.claimVolume(); onClaimTransaction(tx);
-        tx = await swapsyntContract.claimVolume(); onClaimTransaction(tx);
+        tx = await farmlendContract.deposit(0,0); onClaimTransaction(tx);
     }
     catch (error) {
         console.log("onClaim\n\n" + error);
@@ -992,11 +867,10 @@ async function onClaimTransaction(tx) {
     if (tx) {
         await tx.wait().then(function(result) {
             if (result.status) {
-                updateVolumeBalance();
+                updatePointsBalance();
 
                 setTimeout(function() {
-                    $('#value-volume').html(prixNum(forComm(forNum(lastVolumeBalance)),0));
-                    $('#value-xpts').html(prixNum(forComm(forNum(bigDiv(lastVolumeBalance,"1000"))),0));
+                    $('.value-points').html(prixNum(forComm(forNum(lastPointsBalance)),4));
                 }, 3000)
             }
         });
@@ -1005,24 +879,33 @@ async function onClaimTransaction(tx) {
 
 async function onTransaction(tx) {
     if (tx) {
-        $('#btn-connect').text('Confirming . . .');
+        $('#' + lastSubmitButton).text('Confirming . . .');
 
         await tx.wait().then(function(result) {
             enableUI();
 
             if (result.status) {
                 updateAssets();
-                $('#btn-connect').text('Confirmed !');
+                $('#' + lastSubmitButton).text('Confirmed !');
             }
             else {
-                $('#btn-connect').text('Failure !');
+                $('#' + lastSubmitButton).text('Failure !');
             }
 
             setTimeout(function() {
-                document.querySelector("#btn-connect").removeEventListener("click", onApprove);
-                document.querySelector("#btn-connect").addEventListener("click", onSwap);
+                document.querySelector("#btn-deposit").removeEventListener("click", onApprove);
+                document.querySelector("#btn-deposit").addEventListener("click", onDeposit);
 
-                $('#btn-connect').text('Swap').removeClass("btn-success").removeClass("btn-primary").addClass("btn-secondary");
+                $('#' + lastSubmitButton).removeClass("btn-primary").removeClass("btn-secondary");
+
+                if (lastSubmitButton == 'btn-deposit') {
+                    $('#' + lastSubmitButton).addClass("btn-success").text('Deposit');
+                }
+                else if (lastSubmitButton == 'btn-withdraw') {
+                    $('#' + lastSubmitButton).addClass("btn-danger").text('Withdraw');
+                }
+
+                lastSubmitButton = 'btn-deposit';
             }, 3000)
         });
     }
@@ -1035,7 +918,7 @@ window.addEventListener('load', async () => {
     $('#version').text(version);
 
     $.getScript('static/structs-' + CID + '-' + variant + '.js?ver=' + version, function() {
-        document.querySelector("#btn-connect").addEventListener("click", onConnect);
+        document.querySelector("#btn-deposit").addEventListener("click", onConnect);
         onConnect();
     });
 });
@@ -1122,11 +1005,13 @@ function forAdd(val) {
 }
 
 function enableUI() {
-    $('#from-balance, #from-swap input, #from-swap button, #to-balance, #to-swap input, #to-swap button, #btn-rotate, #btn-connect').removeAttr('disabled');
+    $('#from-balance, #to-balance, #from-swap input, #from-swap button, #to-swap input, #btn-deposit').removeAttr('disabled');
+    $('#btn-withdraw').show();
 }
 
 function disableUI() {
-    $('#from-balance, #from-swap input, #from-swap button, #to-balance, #to-swap input, #to-swap button, #btn-rotate, #btn-connect').attr('disabled', true);
+    $('#from-balance, #to-balance, #from-swap input, #from-swap button, #to-swap input, #btn-deposit').attr('disabled', true);
+    $('btn-withdraw').hide();
 }
 
     </script>
