@@ -7,12 +7,12 @@
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" name="viewport">
   <meta content="website" property="og:type">
-  <meta content="Payship.org (PSHP) Your DeFi Spaceship to the Moon! 🚀" property="og:title">
-  <meta content="https://payship.org/static/img/payship.png" property="og:image">
+  <meta content="Payship.org LITEPAPER" property="og:title">
+  <meta content="https://payship.org/static/img/payship-platform.png" property="og:image">
   <meta content="Forget slippage, bots & mev. Get low fees & low gas.<br />Swaps, Perps, Loans & Farms secured by Chainlink. Enjoy!" property="og:description">
   <meta content="Forget slippage, bots & mev. Get low fees & low gas.<br />Swaps, Perps, Loans & Farms secured by Chainlink. Enjoy!" name="description">
 
-  <title>Payship.org (PSHP) Your DeFi Spaceship to the Moon! 🚀</title>
+  <title>Payship.org LITEPAPER</title>
   
   <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
@@ -69,7 +69,7 @@
         <ul class="navbar-nav ml-auto">
           
           <li class="nav-item">
-            <a class="nav-link" href="litepaper.html">LITEPAPER</a>
+            <a class="nav-link" href="/">START</a>
           </li>
 
           <li class="d-none d-sm-block">. . .</li>
@@ -86,7 +86,7 @@
           <li class="nav-item">
             <a class="nav-link" href="farms.html">FARMS</a>
           </li>
-
+          
           <li class="d-none d-sm-block">. . .</li>
           
           <li class="nav-item">
@@ -101,6 +101,7 @@
           <li class="nav-item">
             <a class="nav-link" href="https://t.me/payship"><span class="li-secondary" target="_blank">TG</span></a>
           </li>
+          <li class="d-none d-sm-block">.</li>
           <li class="nav-item">
             <a class="nav-link" href="https://x.com/payship_org"><span class="li-secondary" target="_blank" style="font-size: 1.25rem; line-height: 0.75rem">&xopf;</span></a>
           </li>
@@ -121,14 +122,18 @@
         <hr class="stylish" />
         <h4 class="stylish">Forget Slippage, Bots &amp; MEV. Get Low Fees &amp; Low Gas.<br />Try Swaps, Perps, Loans &amp; Farms Secured by Chainlink &amp; VSDC.</h4>
         
-        <br />
-        <a href="swaps.html" class="btn btn-secondary btn-xl rounded-pill mt-5"><b>SWAPS</b></a>
-        <a href="farms.html" class="btn btn-secondary btn-xl rounded-pill mt-5"><b>FARMS</b></a>
-        <a href="https://app.uniswap.org/#/swap?outputCurrency=0x88d59ba796fdf639ded3b5e720988d59fdb71eb8&inputCurrency=ETH" class="btn btn-primary btn-xl rounded-pill mt-5">Buy PSHP</a>
+        <img src="static/img/payship-platform.png" width="100%" />
       </div>
     </div>
   </header>
   
+  <br /><br />
+  <h2 class="text-muted text-center">
+    PAYSHIP LITEPAPER
+  </h2>
+  <div class="text-muted text-center">
+    <small><i>v1.0.0 &mdash; Sep 12, 2024</i></small>
+  </div>
   <br /><br />
 
   <section id="about">
@@ -146,7 +151,27 @@
     </div>
   </section>
   
-  <br /><br /><br /><br />
+  <br /><br /><hr /><h2 class="text-muted text-center">GATEWAY</h2><br /><br />
+
+  <section>
+    <div class="container">
+      <div class="row align-items-top">
+          <div class="col-md-5 order-md-2">
+            <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol" style="letter-spacing: -3.3rem">V-</span></h2>
+        </div>
+        <div class="col-md-7 order-md-1">
+            <br /><br />
+            <small class="text-muted"><b>Status: Released</b></small>
+            <h2 class="display-4"><a href="vsdc.html">Mint &amp; Redeem VSDC</a></h2>
+            <p><b>Payship VSDC</b> stable denominator is at the core of the Payship platform. VSDC is backed by real ETH and is always priced at one US dollar while used within the Payship dApps. VSDC has a simple and efficient smart contract code based on the wildly popular WETH token. It ties Payship together.</p>
+            <p>You can mint VSDC using ETH, and redeem VSDC for ETH. Redemptions have a flash attack limit where up to maximum of 25% of ETH deposited in the mint contract can be exchanged back from VSDC in a single transaction and block. Both mint and redeem have a -0.4% fee denominated in VSDC thus maximizing gateway ETH, and a +0.1% bonus XP (XPSHP). Fees can be changed by the governance, once it is formed by the XPSHP holders.</p>
+            <p>The VSDC fees are also used as the reward distributed among locked XPSHP. Refer to the REWARDS section for more details.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <br /><br /><hr /><h2 class="text-muted text-center">DEFI</h2><br /><br />
 
   <section>
     <div class="container">
@@ -159,6 +184,8 @@
             <h2 class="display-4"><a href="swaps.html">Swap Synthetics</a></h2>
             <p><b>Payship SWAPS</b> decentralized exchange (DEX) for synthetic assets allows you to swap hundreds of tokens on chains like Ethereum Mainnet and Coinbase Base (coming soon to Arbitrum and Optimism too). Using Chainlink price feed oracles Payship DEX offers accurate prices, zero price impact during swaps, is immune to flash loan attacks, has no slippage, no bots, low fees and low gas costs. Your Payship SWAPS volume counts towards your Payship FARMS rewards!</p>
             <p>To start using Payship SWAPS you first need VSDC tokens in your wallet. You can mint VSDC using ETH. All synthetic assets are priced in US dollars and can be swapped to and from VSDC, or with each other directly.</p>
+            <p>The tokens available for swapping are determined by the Chainlink price feed oracles available on the given chain, for example Base Mainnet. Each swap has a -0.4% fee and a +0.1% bonus XP (XPSHP).</p>
+            <p>The price of the swap is determined on-chain by the Chainlink price feed oracle at the moment of transaction execution. Contrary to AMM pools like Uniswap, there is no slippage, no frontrunning bots and no MEV. The price cannot be affected by swaps, only by the market data provided by the Chainlink price feed oracles. Therefore, Payship SWAPS can fulfill any order size, essentially implying infinite liquidity.</p>
         </div>
       </div>
     </div>
@@ -176,7 +203,7 @@
             <small class="text-muted"><b>Status: In Progress</b></small>
             <h2 class="display-4">Lend &amp; Borrow <br />Many Tokens</h2>
             <p><b>Payship LOANS</b> decentralized lending and borrowing allows you to deposit and borrow many tokens on chains like Ethereum Mainnet and Coinbase Base (coming soon to Arbitrum and Optimism too). Based on the Payship SWAPS technology, and using Chainlink price feed oracles, Payship LOANS are immune to flash loan attacks. Unlike other lending dApps, Payship LOANS offer a stable interest rate system and fixed-interest loans.</p>
-            <p>Moreover, a special basket of super-tokens, like PSHP, offer low-interest, no-liquidation VSDC loans. In turn, VSDC can be used across many Payship dApps, while your Payship LOANS assets accumulate rewards with Payship FARMS!</p>
+            <p>Moreover, a special basket of super-tokens, like PSHP, offer low-interest, no-liquidation VSDC loans. In turn, VSDC can be used across many Payship dApps, while your Payship LOANS assets accumulate rewards with Payship FARMS! These no-liquidation loans are best described as credit lines. The fixed interest on the credit line is 4% APR, plus a 2% fee to open the credit line. Therefore, the total first year interest is 6%, while any consecutive year it remains at 4%.</p>
         </div>
       </div>
     </div>
@@ -200,7 +227,7 @@
     </div>
   </section>
   
-  <br /><br /><br /><br />
+  <br /><br /><hr /><h2 class="text-muted text-center">REWARDS</h2><br /><br />
   
   <section>
     <div class="container">
@@ -213,30 +240,16 @@
             <small class="text-muted"><b>Status: Released</b></small>
             <h2 class="display-4"><a href="farms.html">Earn Rewards &amp; Govern</a></h2>
             <p><b>Payship FARMS</b> decentralized staking for rewards and governance allows you to reap even more benefits just by using Payship dApps and staking selected tokens and LPs. Your activity is rewarded with Payship XP (XPSHP) that in turn allows you to rank up the chart, take part in the rewards distributions and interest rate governance votes.</p>
+            <p>You can accumulate XPSHP by using SWAPS and PERPS. You operational volume generates XPSHP at a rate of 1/100. You can farm XPSHP by depositing selected assets to FARMS and earn at 100% APR.</p>
+            <p>You can trigger a LOCK on your XPSHP, and participate in the distribution of fees accumulated among all Payship dApps. 50% of all fees go to locked XPSHP.</p>
+            <p>Additionally, you can bring referred users to Payship dApps and earn 25% of all fees generated by your referrals.</p>
+            <p>Once Payship is fully decentralized, XPSHP will be used to vote on interest rates applied on the platform. This inlcudes transation fees, credit rates etc.</p>
         </div>
       </div>
     </div>
   </section>
   
-  <br /><br /><br /><br />
-  
-  <section>
-    <div class="container">
-      <div class="row align-items-top">
-          <div class="col-md-5 order-md-2">
-            <h2 class="masthead-heading mb-0 text-center"><span class="big-symbol" style="letter-spacing: -3.3rem">V-</span></h2>
-        </div>
-        <div class="col-md-7 order-md-1">
-            <br /><br />
-            <small class="text-muted"><b>Status: Released</b></small>
-            <h2 class="display-4"><a href="vsdc.html">Mint &amp; Redeem VSDC</a></h2>
-            <p><b>Payship VSDC</b> stable denominator is at the core of the Payship platform. VSDC is backed by real ETH and is always priced at one US dollar while used within the Payship dApps. VSDC has a simple and efficient smart contract code based on the wildly popular WETH token. It ties Payship together.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <br /><br /><br /><br />
+  <br /><br /><hr /><h2 class="text-muted text-center">PRIVACY &amp; OPEN SOURCE</h2><br /><br />
 
   <section>
     <div class="container">

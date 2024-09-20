@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
     <script type="text/javascript" src="static/scripts.js"></script>
-    <script type="text/javascript">const version = 'v1.2.4'; const variant = 'D';</script>
+    <script type="text/javascript">const version = 'v1.2.6'; const variant = 'H';</script>
 
     <style rel="stylesheet">
         h1 {
@@ -211,7 +211,7 @@
                                 </tbody>
                                 <thead id="tips">
                                     <tr>
-                                        <td colspan="4" class="text-center">
+                                        <td colspan="4">
                                             <small class="text-muted text-info">Swap ETH to VSDC to start trading. Wrap VSDC into §VSDC to swap faster with lower gas.</small>
                                         </td>
                                     </tr>
@@ -427,7 +427,7 @@ async function updatePrice(sid) {
     const oracleAddress = synt.oracle;
 
     let price = bigNum('1');
-    let priceDisplay = prixNum(forComm(forNum(price)),2);
+    let priceDisplay = prixNum(forComm(forNum(price)),4);
     let valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
 
     if (oracleAddress && ticker != 'VSDC') {
@@ -442,7 +442,7 @@ async function updatePrice(sid) {
             $('.price-eth').attr('alt',price);
         }
 
-        priceDisplay = prixNum(forComm(forNum(price)),2);
+        priceDisplay = prixNum(forComm(forNum(price)),4);
         valueDisplay = prixNum(forComm(forNum(bigMul(balance,price,true))),0);
     }
 
@@ -519,7 +519,7 @@ async function updateAssets() {
 
             let tickerClass = ticker.toLowerCase();
             let balanceDisplay = balance ? prixNum(forComm(forNum(balance)),6) : "&mdash;";
-            let priceDisplay = price ? prixNum(forComm(forNum(price)),2) : "&mdash;";
+            let priceDisplay = price ? prixNum(forComm(forNum(price)),4) : "&mdash;";
             let valueDisplay = price ? prixNum(forComm(forNum(bigMul(balance,price,true))),0) : "&mdash;";
 
             if (tableEmpty) {
@@ -766,7 +766,7 @@ function onValueChangeProcess(thisParent) {
 }
 
 async function updateSizePrice(pp) {
-    $('#from-size').html(prixNum(forComm(forNum(bigDiv(bigMul("1000000000000000000",pp.to),pp.from))),2));
+    $('#from-size').html(prixNum(forComm(forNum(bigDiv(bigMul("1000000000000000000",pp.to),pp.from))),4));
 }
 
 async function onTickerChange(event,source,pass) {

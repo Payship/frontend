@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
     <script type="text/javascript" src="static/scripts.js"></script>
-    <script type="text/javascript">const version = 'v1.2.4'; const variant = 'D';</script>
+    <script type="text/javascript">const version = 'v1.2.6'; const variant = 'H';</script>
 
     <style rel="stylesheet">
         h1 {
@@ -23,7 +23,8 @@
         #from-balance,
         #farm-balance,
         #to-balance,
-        table tr {
+        #folio-vsdc,
+        #folio-farms {
             cursor: pointer;
         }
 
@@ -203,22 +204,27 @@
                                         <td><small>$</small><span class="price-vsdc" alt="1000000000000000000"><strong>1.<small>00</small></strong></span></td>
                                         <td><small>$</small><span id="value-vsdc">&mdash;</span></td>
                                     </tr>
-                                </tbody>
+                                    <tr value="XPSHP">
+                                        <td>XPSHP</td>
 
-                                <!--<tbody id="folio-vpts-vsdc">
-                                    <tr value="XPSHP-VSDC">
-                                        <td>XPSHP+VSDC</td>
-
-                                        <td><span id="balance-vpts" class="balance">&mdash;</span></td>
+                                        <td><span id="balance-xpts" class="balance">&mdash;</span></td>
                                         <td></td>
                                         <td></td>
                                     </tr>
-                                </tbody>-->
+                                </tbody>
 
                                 <thead id="tips">
                                     <tr>
-                                        <td colspan="4" class="text-center">
-                                            <small class="text-muted text-info"><a href="#">Get VSDC</a><!-- or <a href="#">Pool XPSHP+VSDC</a>-->. Deposit assets to start farming XP.</small>
+                                        <td colspan="4" id="xpts-status">
+                                            <span id="xpts-lockable">
+                                                <small class="text-muted text-info"><a id="btn-lock" href="#">Lock XPSHP</a>. Get rewards from VSDC fees.</small><br />
+                                            </span>
+                                            <span id="xpts-staked" class="btn-hidden">
+                                                <small class="text-muted text-info"><b>XPSHP Locked.</b> Rewards: <span class="xpts-fees">&mdash;</span> VSDC <a href="#" class="btn-reward">CLAIM NOW</a></small><br />
+                                            </span>
+                                            <span id="xpts-unlockable" class="btn-hidden">
+                                                <small class="text-muted text-info"><a id="btn-unlock" href="#">Unlock XPSHP</a>. Rewards: <span class="xpts-fees">&mdash;</span> VSDC <a href="#" class="btn-reward">CLAIM NOW</a></small><br />
+                                            </span>
                                         </td>
                                     </tr>
                                 </thead>
@@ -237,16 +243,17 @@
 
                                         <td><span id="farm-balance-vsdc" class="balance">&mdash;</span></td>
                                         <td></td>
-                                        <td>100%</td>
+                                        <td>50%</td>
                                     </tr>
-                                    <!--<tr value="farm-vpts-vsdc">
-                                        <td>§XPSHP+VSDC</td>
-
-                                        <td><span id="farm-balance-vpts-eth" class="balance">&mdash;</span></td>
-                                        <td></td>
-                                        <td>100%</td>
-                                    </tr>-->
                                 </tbody>
+
+                                <thead id="tips">
+                                    <tr>
+                                        <td colspan="4">
+                                            <small class="text-muted text-info"><a href="vsdc.html">Get VSDC</a><!--, <a href="#">Pool VSDC+ETH</a> or <a href="#">Pool XPSHP+ETH</a>-->. Deposit assets to start farming XP.</small>
+                                        </td>
+                                    </tr>
+                                </thead>
                             </table>
                         </div>
 
@@ -257,9 +264,9 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                Farm Value: $<span id="value-farm">&mdash;</span><br />
+                                Farm Value: <span id="value-farm">&mdash;</span><br />
                                 <small class="text-info text-muted">
-                                    Your deposits farm XP at 100% APR.
+                                    Your deposits farm XP.
                                 </small>
                             </div>
                             <div class="col-sm-6 text-right">
@@ -329,6 +336,7 @@
 "use strict";
 
 const CID = 8453; // 1 - Mainnet, 5 - Goerli, 11155111 - Sepolia, 8453 - Base Mainnet, 84532 - Base Sepolia
+const BIR = 15768000; // 2628000 - Mainnet, 15768000 - Base
 const sVSDC = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("VSDC"));
 
 let accounts;
@@ -341,6 +349,8 @@ let allTickers = [];
 
 let lastAddress;
 let lastVsdcBalance;
+let lastXptsBalance;
+let lastXptsBlock;
 let lastFarmBalance;
 let lastPointsBalance;
 
@@ -360,6 +370,7 @@ let lastSidFrom = 0;
 let lastSidTo = 0;
 
 let vsdcContract;
+let xptsContract;
 let farmlendContract;
 
 
@@ -388,6 +399,17 @@ async function updateVsdcBalance() {
     }
     catch (error) {
         lastVsdcBalance = 0;
+        console.log("lastVsdcBalance\n\n" + error);
+    }
+}
+
+async function updateXptsBalance() {
+    try {
+        lastXptsBalance = await xptsContract.balanceOf(lastAddress);
+        lastXptsBlock = await xptsContract.stakers(lastAddress);
+    }
+    catch (error) {
+        lastXptsBalance = 0;
         console.log("lastVsdcBalance\n\n" + error);
     }
 }
@@ -424,12 +446,34 @@ async function updateTotalFarms() {
     }
 }
 
+async function updateXptsStatus() {
+    $('#xpts-status > span').addClass('btn-hidden');
+    if (lastXptsBlock > 0) {
+        let currentBlock = await provider.getBlockNumber();
+        let currentRewards = await xptsContract.claimPending();
+        $('.xpts-fees').html(prixNum(forComm(forNum(currentRewards)),4));
+        
+        if ((currentBlock - lastXptsBlock) <= (BIR / 3)) {
+            $('#xpts-staked').removeClass('btn-hidden');
+        }
+        else {
+            $('#xpts-unlockable').removeClass('btn-hidden');
+        }
+    }
+    else {
+        $('#xpts-lockable').removeClass('btn-hidden');
+    }
+}
+
 async function updateAssets() {
     await updateVsdcBalance();
+    await updateXptsBalance();
+    await updateXptsStatus();
     await updateFarmBalance();
-    await updatePointsBalance()
+    await updatePointsBalance();
 
     $('#balance-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),6)).attr('value',forNum(lastVsdcBalance));
+    $('#balance-xpts').html(prixNum(forComm(forNum(lastXptsBalance)),6)).attr('value',forNum(lastXptsBalance));
     $('#farm-balance-vsdc').html(prixNum(forComm(forNum(lastFarmBalance)),6)).attr('value',forNum(lastFarmBalance));
 
     $('#value-farm').html(prixNum(forComm(forNum(lastFarmBalance)),0)).attr('value',forNum(lastFarmBalance));
@@ -497,6 +541,7 @@ async function afterConnect() {
     signer = provider.getSigner();
 
     vsdcContract = new ethers.Contract(VSDCAddress, VSDCABI, signer);
+    xptsContract = new ethers.Contract(XPTSAddress, XPTSABI, signer);
     farmlendContract = new ethers.Contract(FarmlendAddress, FarmlendABI, signer);
 
     updateAssets();
@@ -509,6 +554,9 @@ async function afterConnect() {
 
     document.querySelector("#modal-search").addEventListener('keyup', onModalSearch);
 
+    $('#btn-lock').click(onLock);
+    $('#btn-unlock').click(onUnlock);
+    $('.btn-reward').click(onReward);
     $('#btn-claim').click(onClaim);
     $('#btn-display').click(displayTokens);
 
@@ -561,6 +609,10 @@ async function onTickerClick(event) {
 async function onTickerSelect(event,source,pass = 0) {
     const origin = source ? source : this;
     const ticker = $(origin).attr('value');
+
+    if (ticker == 'XPSHP') {
+        return false;
+    }
 
     let balanceWallet = $('#balance-' + ticker.toLowerCase()).attr('value');
     let balanceFarm = $('#farm-balance-' + ticker.toLowerCase()).attr('value');
@@ -794,7 +846,7 @@ async function onDeposit() {
     } catch (error) {
         console.log(error);
 
-        let reason = 'Error! ' + error.reason + '. <a href="/farms.html" class="text-muted">Refresh page</a>';
+        let reason = 'Error! ' + error.reason + '. <a href="farms.html" class="text-muted">Refresh page</a>';
         $('#alert-error').html(reason);
     }
 
@@ -820,7 +872,7 @@ async function onWithdraw() {
     } catch (error) {
         console.log(error);
 
-        let reason = 'Error! ' + error.reason + '. <a href="/farms.html" class="text-muted">Refresh page</a>';
+        let reason = 'Error! ' + error.reason + '. <a href="farms.html" class="text-muted">Refresh page</a>';
         $('#alert-error').html(reason);
     }
 
@@ -845,6 +897,66 @@ async function onApprove() {
     onTransaction(tx);
 
     return false;
+}
+
+async function onLock(event) {
+    if (confirm("This action will LOCK your XPSHP for 4 MONTHS and BLOCK all transfers of XPSHP from your wallet. You WILL be able to claim fee rewards, receive XPSHP from others and increase XPSHP balance in your wallet by claiming farming rewards. After 4 MONTHS you can UNLOCK your XPSHP at any time.")) {
+        let tx;
+        let v;
+
+        event.preventDefault();
+
+        try {
+            tx = await xptsContract.stake(); onLockTransaction(tx);
+        }
+        catch (error) {
+            console.log("onLock\n\n" + error);
+        }
+    }
+
+    return false;
+}
+
+async function onReward(event) {
+    let tx;
+    let v;
+
+    event.preventDefault();
+
+    try {
+        tx = await xptsContract.claim(); onLockTransaction(tx);
+    }
+    catch (error) {
+        console.log("onLock\n\n" + error);
+    }
+
+    return false;
+}
+
+async function onUnlock(event) {
+    let tx;
+    let v;
+
+    event.preventDefault();
+
+    try {
+        tx = await xptsContract.unlock(); onLockTransaction(tx);
+    }
+    catch (error) {
+        console.log("onLock\n\n" + error);
+    }
+
+    return false;
+}
+
+async function onLockTransaction(tx) {
+    if (tx) {
+        await tx.wait().then(function(result) {
+            if (result.status) {
+                updateXptsStatus();
+            }
+        });
+    }
 }
 
 async function onClaim(event) {
