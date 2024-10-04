@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,400,700,900">
     <link rel="stylesheet" type="text/css" href="static/styles.css">
     <script type="text/javascript" src="static/scripts.js"></script>
-    <script type="text/javascript">const version = 'v1.2.6'; const variant = 'H';</script>
+    <script type="text/javascript">const version = 'v1.3.0'; const variant = 'K';</script>
 
     <style rel="stylesheet">
         h1 {
@@ -60,7 +60,28 @@
 
         .custom-select {
             flex: none !important;
-            width: 7.5rem !important;
+            width: 16rem !important;
+            text-align: right !important;
+            border-left-color: transparent !important;
+        }
+        #from-swap input,
+        #to-swap input {
+            border-right-color: transparent !important;
+        }
+
+        form * {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-tap-highlight-color: transparent !important;
+            -webkit-touch-callout: none !important;
+            -webkit-user-select: none !important;
+            -khtml-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+        form *:focus {
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         .font-mono {
@@ -204,6 +225,20 @@
                                         <td><small>$</small><span class="price-vsdc" alt="1000000000000000000"><strong>1.<small>00</small></strong></span></td>
                                         <td><small>$</small><span id="value-vsdc">&mdash;</span></td>
                                     </tr>
+                                    <tr value="VSDC-ETH-UNIV2-LP">
+                                        <td>VSDC-ETH-UNIV2-LP</td>
+
+                                        <td><span id="balance-vsdc-eth-univ2-lp" class="balance">&mdash;</span></td>
+                                        <td><small>$</small><span class="price-vsdc-eth-univ2-lp" alt="100000000000000000000"><strong>100.<small>00</small></strong></span></td>
+                                        <td><small>$</small><span id="value-vsdc-eth-univ2-lp">&mdash;</span></td>
+                                    </tr>
+                                    <tr value="XPSHP-ETH-UNIV2-LP">
+                                        <td>XPSHP-ETH-UNIV2-LP</td>
+
+                                        <td><span id="balance-xpshp-eth-univ2-lp" class="balance">&mdash;</span></td>
+                                        <td><small>$</small><span class="price-xpshp-eth-univ2-lp" alt="95000000000000000000"><strong>95.<small>00</small></strong></span></td>
+                                        <td><small>$</small><span id="value-xpshp-eth-univ2-lp">&mdash;</span></td>
+                                    </tr>
                                     <tr value="XPSHP">
                                         <td>XPSHP</td>
 
@@ -233,8 +268,8 @@
                                         <tr>
                                             <th class="td-bald"><br /><small id="synts-title">Farms</small></th>
                                             <th class="td-bald"><br /><small>Balance</small></th>
-                                            <th class="td-bald"><br /><small></small></th>
-                                            <th class="td-bald"><br /><small>APR</small></th>
+                                            <th class="td-bald"><br /><small>LTV</small></th>
+                                            <th class="td-bald"><br /><small>TGE APR</small></th>
                                         </tr>
                                 </thead>
                                 <tbody id="folio-farms" class="table-folio-farms">
@@ -243,6 +278,20 @@
 
                                         <td><span id="farm-balance-vsdc" class="balance">&mdash;</span></td>
                                         <td></td>
+                                        <td>100%</td>
+                                    </tr>
+                                    <tr value="VSDC-ETH-UNIV2-LP">
+                                        <td>§VSDC-ETH-UNIV2-LP</td>
+
+                                        <td><span id="farm-balance-vsdc-eth-univ2-lp" class="balance">&mdash;</span></td>
+                                        <td></td>
+                                        <td>400%</td>
+                                    </tr>
+                                    <tr value="XPSHP-ETH-UNIV2-LP">
+                                        <td>§XPSHP-ETH-UNIV2-LP</td>
+
+                                        <td><span id="farm-balance-xpshp-eth-univ2-lp" class="balance">&mdash;</span></td>
+                                        <td>55%</td>
                                         <td>50%</td>
                                     </tr>
                                 </tbody>
@@ -250,7 +299,9 @@
                                 <thead id="tips">
                                     <tr>
                                         <td colspan="4">
-                                            <small class="text-muted text-info"><a href="vsdc.html">Get VSDC</a><!--, <a href="#">Pool VSDC+ETH</a> or <a href="#">Pool XPSHP+ETH</a>-->. Deposit assets to start farming XP.</small>
+                                            <small class="text-muted text-info"><a href="vsdc.html">Get VSDC</a> or <a rel="nofollow" href="https://app.uniswap.org/add/v2/ETH/0xa707634fa35ac39709a90d57583f5153aa859369?chain=base">Add VSDC-ETH on Uniswap</a> or <a href="https://app.uniswap.org/add/v2/ETH/0x9d465a08e68d9EFBbefeD02B7CD570AFa96751F6?chain=base">Pool XPSHP-ETH on Uniswap</a>.
+                                            <br />
+                                            Deposit assets to start farming XP.</small>
                                         </td>
                                     </tr>
                                 </thead>
@@ -264,7 +315,7 @@
 
                         <div class="row">
                             <div class="col-sm-6">
-                                Farm Value: <span id="value-farm">&mdash;</span><br />
+                                Farm Value: $<span id="value-farm">&mdash;</span><br />
                                 <small class="text-info text-muted">
                                     Your deposits farm XP.
                                 </small>
@@ -352,6 +403,8 @@ let lastVsdcBalance;
 let lastXptsBalance;
 let lastXptsBlock;
 let lastFarmBalance;
+let lastVSDCETHUNIV2LPBalance;
+let lastXPSHPETHUNIV2LPBalance;
 let lastPointsBalance;
 
 let preloadPriceInterval;
@@ -372,6 +425,8 @@ let lastSidTo = 0;
 let vsdcContract;
 let xptsContract;
 let farmlendContract;
+let vsdcEthUniV2LPContract;
+let xpshpEthUniV2LPContract;
 
 
 async function onConnect() {
@@ -396,6 +451,8 @@ async function onConnect() {
 async function updateVsdcBalance() {
     try {
         lastVsdcBalance = await vsdcContract.balanceOf(lastAddress);
+        lastVSDCETHUNIV2LPBalance = await vsdcEthUniV2LPContract.balanceOf(lastAddress);
+        lastXPSHPETHUNIV2LPBalance = await xpshpEthUniV2LPContract.balanceOf(lastAddress);
     }
     catch (error) {
         lastVsdcBalance = 0;
@@ -415,9 +472,15 @@ async function updateXptsBalance() {
 }
 
 async function updateFarmBalance() {
+    await updateTotalFarms();
+
     try {
-        lastFarmBalance = await farmlendContract.userInfo(0,lastAddress);
-        lastFarmBalance = lastFarmBalance.amount;
+        lastFarmBalance = new Array(totalFarms);
+
+        for (let i = 0; i < totalFarms; i++) {
+            lastFarmBalance[i] = await farmlendContract.userInfo(i,lastAddress);
+            lastFarmBalance[i] = lastFarmBalance[i].amount;
+        }
     }
     catch (error) {
         lastVsdcBalance = 0;
@@ -427,7 +490,11 @@ async function updateFarmBalance() {
 
 async function updatePointsBalance() {
     try {
-        lastPointsBalance = await farmlendContract.pendingPoints(0,lastAddress);
+        lastPointsBalance = 0;
+
+        for (let i = 0; i < totalFarms; i++) {
+            lastPointsBalance = bigAdd(lastPointsBalance,await farmlendContract.pendingPoints(i,lastAddress));
+        }
     }
     catch (error) {
         lastPointsBalance = 0;
@@ -473,17 +540,31 @@ async function updateAssets() {
     await updatePointsBalance();
 
     $('#balance-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),6)).attr('value',forNum(lastVsdcBalance));
-    $('#balance-xpts').html(prixNum(forComm(forNum(lastXptsBalance)),6)).attr('value',forNum(lastXptsBalance));
-    $('#farm-balance-vsdc').html(prixNum(forComm(forNum(lastFarmBalance)),6)).attr('value',forNum(lastFarmBalance));
+    $('#balance-vsdc-eth-univ2-lp').html(prixNum(forComm(forNum(lastVSDCETHUNIV2LPBalance)),6)).attr('value',forNum(lastVSDCETHUNIV2LPBalance));
+    $('#balance-xpshp-eth-univ2-lp').html(prixNum(forComm(forNum(lastXPSHPETHUNIV2LPBalance)),6)).attr('value',forNum(lastXPSHPETHUNIV2LPBalance));
 
-    $('#value-farm').html(prixNum(forComm(forNum(lastFarmBalance)),0)).attr('value',forNum(lastFarmBalance));
+    $('#balance-xpts').html(prixNum(forComm(forNum(lastXptsBalance)),6)).attr('value',forNum(lastXptsBalance));
+    $('#farm-balance-vsdc').html(prixNum(forComm(forNum(lastFarmBalance[0])),6)).attr('value',forNum(lastFarmBalance[0]));
+    $('#farm-balance-vsdc-eth-univ2-lp').html(prixNum(forComm(forNum(lastFarmBalance[1])),6)).attr('value',forNum(lastFarmBalance[1]));
+    $('#farm-balance-xpshp-eth-univ2-lp').html(prixNum(forComm(forNum(lastFarmBalance[2])),6)).attr('value',forNum(lastFarmBalance[2]));
+
+
     $('#value-vsdc').html(prixNum(forComm(forNum(lastVsdcBalance)),0));
+    $('#value-vsdc-eth-univ2-lp').html(prixNum(forComm(forNum(bigMul(lastVSDCETHUNIV2LPBalance,"100"))),0));
+    $('#value-xpshp-eth-univ2-lp').html(prixNum(forComm(forNum(bigMul(lastXPSHPETHUNIV2LPBalance,"95"))),0));
+
+    $('#value-farm').html(
+        prixNum(forComm(forNum(
+            bigAdd(lastFarmBalance[0],bigMul(lastFarmBalance[1],"100"))
+        )),0)
+    );
+
     $('#value-points').html(prixNum(forComm(forNum(lastPointsBalance)),4));
     $('#synts-title').text('Farms loading...');
 
     if ($('#from-swap button').val() == 'VSDC') {
         $('#from-balance').html(prixNum(forNum(lastVsdcBalance))).attr('value',forNum(lastVsdcBalance));
-        $('#farm-balance').html(prixNum(forNum(lastFarmBalance))).attr('value',forNum(lastFarmBalance));
+        $('#farm-balance').html(prixNum(forNum(lastFarmBalance[0]))).attr('value',forNum(lastFarmBalance[0]));
     }
 
     $('#folio tbody tr').click(onTickerSelect);
@@ -543,6 +624,8 @@ async function afterConnect() {
     vsdcContract = new ethers.Contract(VSDCAddress, VSDCABI, signer);
     xptsContract = new ethers.Contract(XPTSAddress, XPTSABI, signer);
     farmlendContract = new ethers.Contract(FarmlendAddress, FarmlendABI, signer);
+    vsdcEthUniV2LPContract = new ethers.Contract(VSDCETHUNIV2LPAddress, UNIV2LPABI, signer);
+    xpshpEthUniV2LPContract = new ethers.Contract(XPSHPETHUNIV2LPAddress, UNIV2LPABI, signer);
 
     updateAssets();
 
@@ -566,23 +649,32 @@ async function afterConnect() {
 }
 
 async function onCheckAllowance() {
-    if($('#from-swap button').val() == 'VSDC') {
-        let offer = toBigNum('#from-swap input').toString();
-        let address = FarmlendAddress;
-        let allowance = await vsdcContract.allowance(lastAddress,address);
+    let ticker = $('#from-swap button').val();
+    let offer = toBigNum('#from-swap input').toString();
+    let address = FarmlendAddress;
+    let allowance = 0;
 
-        if (bigLt(allowance,offer)) {
-            $('#btn-deposit').text('Approve').removeClass("btn-success").addClass("btn-primary");
-            $('#btn-withdraw').hide();
-            document.querySelector("#btn-deposit").removeEventListener("click", onDeposit);
-            document.querySelector("#btn-deposit").addEventListener("click", onApprove);
-        }
-        else {
-            $('#btn-deposit').text('Deposit').removeClass("btn-primary").addClass("btn-success");
-            $('#btn-withdraw').show();
-            document.querySelector("#btn-deposit").removeEventListener("click", onApprove);
-            document.querySelector("#btn-deposit").addEventListener("click", onDeposit);
-        }
+    if (ticker == 'VSDC') {
+        allowance = await vsdcContract.allowance(lastAddress,address);
+    }
+    else if (ticker == 'VSDC-ETH-UNIV2-LP') {
+        allowance = await vsdcEthUniV2LPContract.allowance(lastAddress,address);
+    }
+    else if (ticker == 'XPSHP-ETH-UNIV2-LP') {
+        allowance = await xpshpEthUniV2LPContract.allowance(lastAddress,address);
+    }
+
+    if (bigLt(allowance,offer)) {
+        $('#btn-deposit').text('Approve').removeClass("btn-success").addClass("btn-primary");
+        $('#btn-withdraw').hide();
+        document.querySelector("#btn-deposit").removeEventListener("click", onDeposit);
+        document.querySelector("#btn-deposit").addEventListener("click", onApprove);
+    }
+    else {
+        $('#btn-deposit').text('Deposit').removeClass("btn-primary").addClass("btn-success");
+        $('#btn-withdraw').show();
+        document.querySelector("#btn-deposit").removeEventListener("click", onApprove);
+        document.querySelector("#btn-deposit").addEventListener("click", onDeposit);
     }
 }
 
@@ -625,7 +717,7 @@ async function onTickerSelect(event,source,pass = 0) {
     modalOpen = false;
 
     lastSwapButton = 'from-swap';
-    onTickerChange(event,origin,pass);
+    onCheckAllowance();
 }
 
 function onModalSearch(event) {
@@ -644,32 +736,6 @@ function onModalSearch(event) {
     }
 }
 
-async function onTickerRotate() {
-    let tempValue = $('#from-swap input').val();
-    let tempTicker = $('#from-swap button').val();
-    let tempText = $('#from-swap button').text();
-    let tempBalance = $('#from-balance').html();
-    let tempBalanceValue = $('#from-balance').attr('value');
-
-    $('#from-swap input').val( $('#to-swap input').val() );
-    $('#from-swap button').val( $('#to-swap button').val() );
-    $('#from-swap button').text( $('#to-swap button').text() );
-    $('#from-balance').html( $('#to-balance').html() ).attr('value', $('#to-balance').attr('value') );
-
-    $('#to-swap input').val(tempValue);
-    $('#to-swap button').val(tempTicker).text(tempText);
-    $('#to-balance').html(tempBalance).attr('value',tempBalanceValue);
-
-    lastSwapButton = 'to-swap';
-    lastSwapFrom = $('#from-swap button').val();
-    lastSwapTo = $('#to-swap button').val();
-
-    onCheckAllowance();
-    onTickerChange();
-
-    return false;
-}
-
 async function onValueChange(event) {
     let thisTarget = $(event.currentTarget);
     onValueChangeProcess(thisTarget.parent());
@@ -682,9 +748,7 @@ function onValueChangeProcess(thisParent) {
         let fromValue = $('#from-swap input').val();
 
         if (parseFloat(fromValue) > 0) {
-            if ($('#from-swap button').val() == 'VSDC') {
-                onCheckAllowance();
-            }
+            onCheckAllowance();
         }
     }
 
@@ -695,75 +759,8 @@ async function updateSizePrice(pp) {
     $('#from-size').html(prixNum(forComm(forNum(bigDiv(bigMul("1000000000000000000",pp.to),pp.from))),2));
 }
 
-async function onTickerChange(event,source,pass) {
-    // if (pass == 0) {
-    //     pass += 1;
-
-    //     if ($(source).attr('value') == 'ETH') {
-    //         if ($('#from-swap button').text() == 'ETH') {
-    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
-    //             return false;
-    //         }
-
-    //         if ($('#to-swap button').text() == 'ETH') {
-    //             lastSwapButton = 'from-swap';
-    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
-    //             return false;
-    //         }
-    //     }
-    //     else if ($(source).attr('value') != 'VSDC') {
-    //         if ($('#from-swap button').text() == 'ETH') {
-    //             lastSwapButton = 'from-swap';
-    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
-    //             return false;
-    //         }
-
-    //         if ($('#to-swap button').text() == 'ETH') {
-    //             lastSwapButton = 'to-swap';
-    //             onTickerSelect(event,$('#folio-vsdc tr'),pass);
-    //             return false;
-    //         }
-    //     }
-    // }
-
-    // $('#from-ticker').text( $('#from-swap button').text() );
-    // $('#to-ticker').text( $('#to-swap button').text() );
-
-    // let pp = getPairPrice();
-    //          updateSizePrice(pp);
-
-    // if (lastSwapButton == 'from-swap') {
-    //     // onValueChangeProcess($('#to-swap'));
-    // }
-    // else {
-    //     onValueChangeProcess($('#from-swap'));
-    // }
-
-    // if ((pp.fromTicker == 'VSDC' && pp.toTicker == '§VSDC') ||
-    //     (pp.fromTicker == '§VSDC' && pp.toTicker == 'VSDC') ) {
-    //     $('#fee').text('0');
-    // }
-    // else if (pp.fromTicker == 'ETH' || pp.toTicker == 'ETH' ) {
-    //     $('#fee').text('0.5');
-    // }
-    // else {
-    //     $('#fee').text('0.5');
-    // }
-
-    // lastSidFrom = allTickers[pp.fromTicker];
-    // lastSidTo = allTickers[pp.toTicker];
-
-    // updatePrice(lastSidFrom);
-    // updatePrice(lastSidTo);
-
-    // if (livePriceInterval) clearInterval(livePriceInterval);
-    // livePriceInterval = setInterval(function () { updatePrice(lastSidFrom); updatePrice(lastSidTo); }, 15000);
-
-    return false;
-}
-
 function getPairPrice() {
-    let fromTicker = $('#from-ticker').text();
+    let fromTicker = $('#from-swap button').attr('value');
     // let toTicker = $('#to-ticker').text();
 
     let fromTickerClass = toClass(fromTicker);
@@ -840,9 +837,19 @@ async function onDeposit() {
     let tx = beforeTransaction();
 
     try {
+        let fid = 0;
         if (pp.fromTicker == 'VSDC') {
-            tx = await farmlendContract.deposit(0,pp.fromSize);
+            fid = 0;
         }
+        else if (pp.fromTicker == 'VSDC-ETH-UNIV2-LP') {
+            fid = 1;
+        }
+        else if (pp.fromTicker == 'XPSHP-ETH-UNIV2-LP') {
+            fid = 2;
+        }
+
+        tx = await farmlendContract.deposit(fid,pp.fromSize);
+
     } catch (error) {
         console.log(error);
 
@@ -866,9 +873,19 @@ async function onWithdraw() {
     let tx = beforeTransaction();
 
     try {
+        let fid = 0;
         if (pp.fromTicker == 'VSDC') {
-            tx = await farmlendContract.withdraw(0,pp.fromSize);
+            fid = 0;
         }
+        else if (pp.fromTicker == 'VSDC-ETH-UNIV2-LP') {
+            fid = 1;
+        }
+        else if (pp.fromTicker == 'XPSHP-ETH-UNIV2-LP') {
+            fid = 2;
+        }
+        
+        tx = await farmlendContract.withdraw(fid,pp.fromSize);
+        
     } catch (error) {
         console.log(error);
 
@@ -889,7 +906,16 @@ async function onApprove() {
     let contractAddress = FarmlendAddress;
 
     try {
-        tx = await vsdcContract.approve(contractAddress, toBigNum('#swapApproval'));
+        if (pp.fromTicker == 'VSDC') {
+            tx = await vsdcContract.approve(contractAddress, toBigNum('#swapApproval'));
+        }
+        else if (pp.fromTicker == 'VSDC-ETH-UNIV2-LP') {
+            tx = await vsdcEthUniV2LPContract.approve(contractAddress, toBigNum('#swapApproval'));
+        }
+        else if (pp.fromTicker == 'XPSHP-ETH-UNIV2-LP') {
+            tx = await xpshpEthUniV2LPContract.approve(contractAddress, toBigNum('#swapApproval'));
+        }
+        
     } catch (error) {
         console.log(error);
     }
